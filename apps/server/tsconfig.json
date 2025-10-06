@@ -1,0 +1,34 @@
+{
+	"compilerOptions": {
+		"target": "ES2024",
+		"module": "ESNext",
+		"moduleResolution": "Bundler",
+
+		"lib": ["ES2024"],
+		"allowSyntheticDefaultImports": true,
+
+		"baseUrl": ".",
+		"paths": {
+			"@/*": ["./src/*"],
+		},
+
+		"strict": true,
+		"esModuleInterop": true,
+		"skipLibCheck": true,
+
+		"isolatedModules": true,
+
+		"allowJs": true,
+		"checkJs": false,
+
+		"forceConsistentCasingInFileNames": true,
+
+		"verbatimModuleSyntax": true,
+
+		"types": ["node"],
+
+		"outDir": "./dist/server",
+	},
+	"include": ["src/**/*.ts"],
+	"exclude": ["node_modules", "dist"]
+}

@@ -1,0 +1,27 @@
+.dropdown {
+	position: relative;
+}
+
+.dropdown:hover > .content,
+.dropdown:has(.content :global(.modal-backdrop)) > .content,
+.dropdown > .button:focus ~ .content {
+	display: block;
+}
+
+.button {
+	padding: 0px;
+	border: 0px;
+	background: inherit;
+	display: flex;
+	cursor: pointer;
+}
+
+.button:focus-visible {
+	outline: auto;
+}
+
+.content {
+	display: none;
+	position: absolute;
+	z-index: 60;
+}

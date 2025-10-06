@@ -1,0 +1,39 @@
+name: "Setup Node.js"
+description: "Setup Node.js"
+
+inputs:
+  token:
+    description: "The GitHub token"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Enable corepack
+      run: corepack enable
+      shell: bash
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version-file: '.nvmrc'
+        cache: 'npm'
+
+    - name: Write private key to .npmrc file
+      shell: bash
+      run: echo "//npm.pkg.github.com/:_authToken=${{ inputs.token }}" >> .npmrc
+
+    - name: Write private key to .npmrc file
+      working-directory: apps/server
+      shell: bash
+      run: echo "//npm.pkg.github.com/:_authToken=${{ inputs.token }}" >> .npmrc
+
+    - name: Write private key to .npmrc file
+      working-directory: apps/web
+      shell: bash
+      run: echo "//npm.pkg.github.com/:_authToken=${{ inputs.token }}" >> .npmrc
+
+    - name: Write private key to .npmrc file
+      working-directory: apps/cloud
+      shell: bash
+      run: echo "//npm.pkg.github.com/:_authToken=${{ inputs.token }}" >> .npmrc

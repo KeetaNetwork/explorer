@@ -1,0 +1,61 @@
+name: Deploy Pulumi
+
+on:
+  workflow_call:
+    secrets:
+      GCP_CREDENTIALS:
+        required: true
+
+jobs:
+  development:
+    name: Development Environment
+    runs-on: ubuntu-latest-l
+    concurrency:
+      # The only thing that really matters for concurrency is the stack name, so we can use that as the key
+      group: deployment
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Authorize GCloud SDK
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+
+      - name: Set up GCloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Setup Node.js
+        uses: ./.github/actions/setup-node
+        with:
+          token: ${{ github.token }}
+
+      - name: Build
+        run: make
+
+      - uses: pulumi/actions@v5
+        with:
+          # We use a specific version
+          pulumi-version: '3.122.0'
+          # Login to the Pulumi state bucket
+          cloud-url: gs://pulumi-liftoffs-truest-561598453/
+          # "up" = update the stack
+          command: up
+          # refresh the current state of any resources before updating
+          refresh: true
+          # print the difference/planned updates for debugging purposes
+          diff: true
+          # Name of the stack to update
+          stack-name: dev
+          # If being deployed from a PR, add a comment on the deployment
+          # status for easier access
+          comment-on-pr: true
+          # Add a comment on the GitHub Action with a summary of changes
+          comment-on-summary: true
+          # The directory containing the Pulumi files
+          work-dir: deployment
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_SHA: ${{ github.sha }}
+
+

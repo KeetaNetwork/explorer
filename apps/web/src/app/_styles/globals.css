@@ -1,0 +1,17 @@
+@import "@keetanetwork/web-ui/styles.css";
+@import "@keetanetwork/web-ui/fonts.css";
+
+/* Reset CSS: Some tricks that helps during development */
+@import './reset.css';
+
+/* Theme / Tailwind @base */
+@import './theme.css';
+
+/* Set default properties/colors for some HTML tags */
+@import './defaults.css';
+
+/* Custom components / Tailwind @components */
+@import "./components.css";
+
+/* Custom classes - utilities / Tailwind @utilities */
+@import "./utilities.css";

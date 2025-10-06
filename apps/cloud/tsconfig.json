@@ -1,0 +1,38 @@
+{
+	"compilerOptions": {
+		"target": "es2024",
+		"module": "ESNext",
+    	"moduleResolution": "Bundler",
+		
+		"lib": ["es2024"],
+		"allowSyntheticDefaultImports": true,
+		// "types": ["node"],
+		
+		"baseUrl": ".",
+
+		"strict": true,
+		"esModuleInterop": true,
+		"skipLibCheck": true,
+
+		// "isolatedModules": true,
+
+		"allowJs": true,
+		"checkJs": false,
+
+		"forceConsistentCasingInFileNames": true,
+		
+		"verbatimModuleSyntax": true,
+
+		// "sourceMap": true,
+		// "rootDir": "./src",
+		"outDir": "./built/cloud",
+		"declaration": true,
+		// "declarationMap": true,
+		// "pretty": true,
+		// "noEmit": false,
+		// "resolveJsonModule": true,
+		"typeRoots": ["node_modules/@types"]
+	},
+	"include": ["src/**/*"],
+	"exclude": ["node_modules", "dist", "built"]
+}

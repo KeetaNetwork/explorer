@@ -1,0 +1,10 @@
+name: explorer-cloud-deploy
+description: Explorer Cloud Deployment
+runtime:
+  name: nodejs
+  options:
+    packagemanager: npm
+    nodeargs: "--import tsx"
+
+backend:
+  url: gs://pulumi-liftoffs-truest-561598453/

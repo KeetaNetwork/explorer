@@ -1,0 +1,29 @@
+{
+	"name": "explorer",
+	"description": "",
+	"author": "Keeta, Inc",
+	"private": true,
+	"type": "module",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/KeetaNetwork/explorer.git"
+	},
+	"scripts": {
+		"tsx": "tsx",
+		"dev": "make do-dev-server",
+		"lint": "make do-lint",
+		"test": "make test"
+	},
+	"packageManager": "npm@9.8.1",
+	"engines": {
+		"node": ">=20.18.0",
+		"npm": ">=9.8.1"
+	},
+	"engineStrict": true,
+	"devDependencies": {
+		"@keetanetwork/explorer-cloud": "file:apps/cloud/dist/keetanetwork-explorer-cloud.tgz",
+		"@types/node": "22.15.21",
+		"tsx": "4.19.4",
+		"typescript": "5.8.3"
+	}
+}

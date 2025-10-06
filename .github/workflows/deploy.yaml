@@ -1,0 +1,42 @@
+name: Deploy
+
+on:
+  pull_request:
+    branches: [ main ]
+    types: [ closed ]
+
+  workflow_dispatch:
+    inputs:
+      pulumi:
+        description: 'Deploy Pulumi'
+        required: false
+        default: false
+        type: boolean
+
+      package:
+        description: 'Deploy Package'
+        required: false
+        default: false
+        type: boolean
+
+jobs:
+  pulumi:
+    if: ${{ (github.event_name == 'pull_request' && github.event.pull_request.merged) || (github.event_name == 'workflow_dispatch' && github.event.inputs.pulumi == 'true') }}
+    name: Pulumi
+    uses: ./.github/workflows/_deploy_pulumi.yaml
+    secrets: inherit
+    permissions:
+      contents: read
+      packages: read
+      pull-requests: write
+
+  package:
+    if: ${{ (github.event_name == 'pull_request' && github.event.pull_request.merged) || (github.event_name == 'workflow_dispatch' && github.event.inputs.package == 'true') }}
+    name: Package
+    uses: ./.github/workflows/_deploy_package.yaml
+    with:
+      skip-version-check: ${{ github.event.inputs.package == 'true' }}
+    permissions:
+      contents: read
+      packages: write
+      pull-requests: read

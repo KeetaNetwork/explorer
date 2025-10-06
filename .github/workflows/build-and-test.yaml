@@ -1,0 +1,63 @@
+name: Build and Test
+
+on:
+  pull_request:
+
+jobs:
+  build:
+    name: Build Project
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: ./.github/actions/setup-node
+        with:
+          token: ${{ github.token }}
+
+      - name: Build
+        run: make
+
+      - name: Store full workspace
+        uses: actions/upload-artifact@v4
+        with:
+          name: full-workspace
+          path: .
+
+  lint-and-test:
+    name: Lint and Test Each App
+    needs: build
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        app: [server, web, cloud]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Setup Node.js from .nvmrc
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+
+      - name: Download full workspace
+        uses: actions/download-artifact@v4
+        with:
+          name: full-workspace
+
+      - name: Lint app
+        working-directory: apps/${{ matrix.app }}
+        run: make do-lint
+
+      - name: Test app
+        working-directory: apps/${{ matrix.app }}
+        run: make test

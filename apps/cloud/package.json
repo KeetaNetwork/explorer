@@ -1,0 +1,38 @@
+{
+	"name": "@keetanetwork/explorer",
+	"version": "0.0.17",
+	"description": "",
+	"author": "Keeta, Inc",
+	"type": "module",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/KeetaNetwork/explorer.git"
+	},
+	"publishConfig": {
+		"registry": "https://npm.pkg.github.com"
+	},
+	"main": "./cloud/index.cjs",
+	"types": "./cloud/index.d.cts",
+	"exports": {
+		".": {
+			"import": "./cloud/index.cjs"
+		}
+	},
+	"scripts": {
+		"tsc": "tsc",
+		"tsup": "tsup",
+		"build": "make dist",
+		"type-check": "tsc --noEmit --pretty"
+	},
+	"dependencies": {
+		"@google-cloud/dns": "4.0.0",
+		"@keetanetwork/pulumi-components": "1.0.79",
+		"@pulumi/gcp": "7.29.0",
+		"@pulumi/pulumi": "3.122.0"
+	},
+	"devDependencies": {
+		"@types/node": "20.17.50",
+		"tsup": "8.5.0",
+		"typescript": "5.9.2"
+	}
+}

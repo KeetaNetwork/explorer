@@ -1,0 +1,31 @@
+name: Deploy Package
+
+on:
+  workflow_call:
+    inputs:
+      skip-version-check:
+        description: 'Skip version check'
+        required: false
+        default: false
+        type: boolean
+
+jobs:
+  publish:
+    name: Publish on GitHub Packages
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: ./.github/actions/setup-node
+        with:
+          token: ${{ github.token }}
+
+      - name: Build package
+        shell: bash
+        run: make
+
+      - name: Publish package
+        shell: bash
+        run: make do-publish
+

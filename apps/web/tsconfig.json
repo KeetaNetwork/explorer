@@ -1,0 +1,43 @@
+{
+	"compilerOptions": {
+		"target": "ES2020",
+		"module": "ESNext",
+		"moduleResolution": "bundler",
+		"allowJs": true,
+		"checkJs": true,
+
+		"rootDir": ".",
+		"baseUrl": ".",
+
+		/* Preact Config */
+		"jsx": "react-jsx",
+		"jsxImportSource": "preact",
+		"skipLibCheck": true,
+		"paths": {
+			"react": ["./node_modules/preact/compat/"],
+			// "react/jsx-runtime": ["./node_modules/preact/jsx-runtime"],
+			"react-dom": ["./node_modules/preact/compat/"],
+			// "react-dom/*": ["./node_modules/preact/compat/*"],
+			"@/*": ["./src/*"],
+			"@keetanetwork/explorer-client": ["../server/dist/client"]
+		},
+
+		"allowImportingTsExtensions": true,
+		"resolveJsonModule": true,
+		"isolatedModules": true,
+		"noEmit": true,
+
+		"declaration": true,
+		"declarationMap": true,
+		"emitDeclarationOnly": true,
+
+		// Linting
+		"strict": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"noFallthroughCasesInSwitch": true,
+
+		"types": ["vite/client"]
+	},
+	"include": ["node_modules/vite/client.d.ts", "vite-svg.d.ts", "src/**/*"]
+}

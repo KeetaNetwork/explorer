@@ -1,0 +1,24 @@
+@layer utilities {
+	.shadow-overlay {
+		box-shadow: 0px 4px 6px 0px rgba(143, 141, 141, 0.30);
+	}
+
+	.absolute-y-centralized {
+		@apply absolute top-1/2 -translate-y-1/2;
+	}
+
+	.absolute-centralized {
+		@apply absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2;
+	}
+
+	.box {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
+
+	.text-rtl {
+		text-align: left;
+		direction: rtl;
+	}
+}

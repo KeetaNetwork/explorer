@@ -1,0 +1,4 @@
+secretsprovider: gcpkms://projects/mimetic-algebra-344104/locations/nam8/keyRings/pulumi-secrets/cryptoKeys/dev
+encryptedkey: CiQASqjc0nnns3LgRitFn91/L2ocWJZj1ugHykduzclFkgXKycYSSABRxxarHO4ndclSCjlp5tmYrJFB5onv9b9rVT93In9BVq7/AhfhW+3s7T+sxX7xvSJEIwlY43JpUDOK092yc1J4vhyKzmjjGQ==
+config:
+  gcp:project: mimetic-algebra-344104

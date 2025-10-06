@@ -1,0 +1,14 @@
+#! /usr/bin/env bash
+
+commit="$1"
+if [ -z "${commit}" ]; then
+	echo 'usage: upgrade-keetanet <commit>' >&2
+	exit 1
+fi
+
+set -ex
+make vendor/keetanet-client-"${commit}".tgz vendor/keetanet-node-"${commit}".tgz
+npm install ./vendor/keetanet-client-"${commit}".tgz
+awk '/file:vendor\/keetanet/{ print; after = 1; next; } (/integrity/ && after == 1){ next; } { after = 0; print; }' npm-shrinkwrap.json > npm-shrinkwrap.json.new
+cat npm-shrinkwrap.json.new > npm-shrinkwrap.json
+rm -f npm-shrinkwrap.json.new

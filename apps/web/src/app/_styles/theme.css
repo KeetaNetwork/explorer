@@ -1,0 +1,162 @@
+@layer base {
+	:root {
+		/* HSL Default colors */
+		--palette-primary: 0 2% 17%;
+		/* --palette-primary: 12 79% 70%; */
+		--palette-secondary: 16 51% 76%;
+		--palette-background: 0 0% 96%;
+		--palette-background-paper: 55 100% 98%;
+		--palette-background-header: var(--palette-primary);
+		--palette-error: 0 100% 75%;
+		--palette-action-disabled: 0 0% 80%;
+		--palette-black: 0 2% 17%;
+		--palette-white: 0 0% 100%;
+
+		/* BRAND COLORS */
+		--pallete-brand-primary: 11 100% 71%;
+		--pallete-brand-secondary: 0 1% 20%;
+		--pallete-brand-tertiary: #4DA738;
+
+		/* FOREGROUND */
+		--palette-foreground-main: #FFF;
+		--palette-foreground-secondary: #FFFDED;
+
+		/* NEUTRAL */
+		--palette-neutral-main: #2A2A2A;
+		--palette-neutral-secondary: #FFF;
+
+		/* BACKGROUND */
+		--palette-background-main: #FFFEF3;
+
+		/* BUTTON */
+		--palette-button-primary: var(--palette-brand-primary);
+		--palette-button-secondary: var(--palette-neutral-main);
+		--palette-button-tertiary: #E2ECEE;
+
+		/* FUNCTIONAL PALLETE */
+		--palette-functional-error-rgb: 204 44 26;
+		--palette-functional-error: rgb(var(--palette-functional-error-rgb));
+		--palette-functional-success: var(--pallete-brand-tertiary);
+		--palette-functional-focus: #5B7AD2;
+		--palette-functional-disabled: #454340;
+		--palette-functional-border: #D5D5D1;
+
+		/* OPACITY */
+		--palette-functional-opacity-50: rgba(42, 42, 42, 0.50);
+		--palette-functional-opacity-40: rgba(42, 42, 42, 0.40);
+		--palette-functional-opacity-10: rgba(42, 42, 42, 0.10);
+		--palette-functional-opacity-05: rgba(42, 42, 42, 0.05);
+
+		/* EXTENDED TEXT */
+		--palette-extended-text-10: #FDFDFD;
+		--palette-extended-text-20: #E3E3E3;
+		--palette-extended-text-30: #C8C8C8;
+		--palette-extended-text-40: #AAA;
+		--palette-extended-text-50: #8F8D8D;
+		--palette-extended-text-60: #757474;
+		--palette-extended-text-70: #5F5D5D;
+		--palette-extended-text-80: #4B4949;
+		--palette-extended-text-90: #383737;
+		--palette-extended-text-100: #2A2A2A;
+
+		/* DEFAULT COLORS */
+		--default-color-background: #F2F2F2;
+		--default-color-text: var(--palette-neutral-main);
+
+		--default-color-input-background: #F8F8F8;
+		--default-color-input-border: var(--palette-extended-text-40);
+		--default-color-input-focus: hsl(var(--palette-primary));
+
+		--default-color-paper-border: #E9E9E9;
+
+		--default-color-input-focus-background: #F8F8F8;
+		--default-color-input-focus-border: #E9E9E9;
+
+		--default-color-input-disabled-text: var(--palette-functional-opacity-50);
+		--default-color-input-disabled-label-text: rgb(95, 93, 93, 0.5);
+
+		--default-color-border: #ECECEA;
+		--default-color-table-border: var(--default-color-border);
+		--default-color-table-border: var(--default-color-border);
+
+		--default-color-breadcrumb-text: #A1A1A1;
+
+		--default-progress-color: var(--palette-neutral-main);
+		--default-progress-size-bar: 4px;
+		--default-progress-size-spinner: 16px;
+		--default-color-loader-bg: #EDEDED;
+
+		--default-color-toast-border: #E3E3E3;
+
+		/* LAYOUT */
+		--default-layout-navbar: 266px;
+		--default-layout-authenticated-grid: var(--default-layout-navbar) minmax(1014px, auto);
+
+		--default-layout-dropdown-profile-color-hover-background: #FAFAFA;
+		--default-layout-navbar-color-background: #F7F7F7;
+		--default-layout-table-color-background: #F7F7F7;
+		--default-layout-table-color-hover-background: #FAFAFA;
+		--default-layout-table-color-header-text: #979393;
+	}
+}
+
+@theme {
+	/* Base Colors */
+	--color-black: hsl(var(--palette-black));
+	--color-white: hsl(var(--palette-white));
+	/* --color-primary: hsl(var(--palette-primary)); */
+	--color-secondary: hsl(var(--palette-secondary));
+	--color-background: hsl(var(--palette-background));
+	--color-background-paper: hsl(var(--palette-background-paper));
+	--color-background-header: hsl(var(--palette-background-header));
+	/* --color-error: hsl(var(--palette-error)); */
+	--color-action-disabled: hsl(var(--palette-action-disabled));
+
+	/* Brand */
+	--color-brand-primary: hsl(var(--pallete-brand-primary));
+	--color-brand-secondary: hsl(var(--pallete-brand-secondary));
+	--color-brand-tertiary: var(--pallete-brand-tertiary);
+	/* --color-brand-secondary-alternate: var(--palette-brand-secondary-alternate);
+	--color-brand-tertiary-alternate: var(--palette-brand-tertiary-alternate); */
+
+	/* Foreground */
+	--palette-foreground-main: var(--palette-foreground-main);
+	--color-foreground-secondary: var(--palette-foreground-secondary);
+
+	/* Neutral */
+	--color-neutral-main: var(--palette-neutral-main);
+	--color-neutral-secondary: var(--palette-neutral-secondary);
+
+	/* Backgrounds */
+	--color-background-main: var(--palette-background-main);
+
+	/* Buttons */
+	/* --color-button-primary: var(--palette-button-primary);
+	--color-button-secondary: var(--palette-button-secondary);
+	--color-button-tertiary: var(--palette-button-tertiary); */
+
+	/* Functional */
+	--color-functional-error: rgb(var(--palette-functional-error-rgb));
+	--color-functional-success: var(--palette-functional-success);
+	--color-functional-focus: var(--palette-functional-focus);
+	--color-functional-disabled: var(--palette-functional-disabled);
+	--color-functional-border: var(--palette-functional-border);
+
+	/* Opacity */
+	--color-functional-opacity-50: var(--palette-functional-opacity-50);
+	--color-functional-opacity-40: var(--palette-functional-opacity-40);
+	--color-functional-opacity-10: var(--palette-functional-opacity-10);
+	--color-functional-opacity-5: var(--palette-functional-opacity-05);
+
+	/* Extended Text */
+	--color-extended-text-10: var(--palette-extended-text-10);
+	--color-extended-text-20: var(--palette-extended-text-20);
+	--color-extended-text-30: var(--palette-extended-text-30);
+	--color-extended-text-40: var(--palette-extended-text-40);
+	--color-extended-text-50: var(--palette-extended-text-50);
+	--color-extended-text-60: var(--palette-extended-text-60);
+	--color-extended-text-70: var(--palette-extended-text-70);
+	--color-extended-text-80: var(--palette-extended-text-80);
+	--color-extended-text-90: var(--palette-extended-text-90);
+	--color-extended-text-100: var(--palette-extended-text-100);
+}
