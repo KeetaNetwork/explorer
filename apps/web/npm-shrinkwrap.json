@@ -7,7 +7,7 @@
 		"": {
 			"name": "web",
 			"dependencies": {
-				"@keetanetwork/anchor": "0.0.11",
+				"@keetanetwork/anchor": "0.0.17",
 				"@keetanetwork/web-ui": "1.3.18",
 				"@modular-forms/preact": "0.12.1",
 				"@preact-signals/query": "2.1.1",
@@ -1156,14 +1156,13 @@
 			}
 		},
 		"node_modules/@keetanetwork/anchor": {
-			"version": "0.0.11",
-			"resolved": "https://npm.pkg.github.com/download/@keetanetwork/anchor/0.0.11/314a6d86b313650e503170988f80c5d462f0d23e",
-			"integrity": "sha512-T67tBxLwUi+XlL1RRU6tQif7/Mf1A0JnjURjZvaCQRfSMXeQFZf1INUsnnD7YbXSi/WKdETfrtzkyANmyvwOgQ==",
+			"version": "0.0.17",
+			"resolved": "https://npm.pkg.github.com/download/@keetanetwork/anchor/0.0.17/d16dbc34b352ed4ea7b751e97c34340672195fa2",
+			"integrity": "sha512-JnSjAuqC8a9mA6P1cvXfn8N4w2/NejB0NZAuynZzEtJXh9HSBSUsrYVNjkPGqR1ih53js1S5NRpiOUq03zPv6A==",
 			"license": "SEE LICENSE IN LICENSE",
 			"dependencies": {
 				"@keetanetwork/currency-info": "1.2.5",
-				"@keetanetwork/keetanet-client": "0.14.7",
-				"decimal.js": "10.6.0",
+				"@keetanetwork/keetanet-client": "0.14.10",
 				"typia": "9.5.0"
 			},
 			"engines": {
@@ -1171,10 +1170,10 @@
 			}
 		},
 		"node_modules/@keetanetwork/asn1-napi-rs": {
-			"version": "1.1.9",
-			"resolved": "https://npm.pkg.github.com/download/@KeetaNetwork/asn1-napi-rs/1.1.9/8f6950060c75c3c2382a60ca04b326a73b479301",
-			"integrity": "sha512-FLf387OvApX6GgT8JINy7UGfwo86hzlK2sBpQYDPzhLK/mr5tfBi1SJIjlEzt704HyCr/d9O3k5XujD6LwwEdA==",
-			"license": "Proprietary",
+			"version": "1.2.0",
+			"resolved": "https://npm.pkg.github.com/download/@KeetaNetwork/asn1-napi-rs/1.2.0/ae693d197df1c0faaf59ee55a695e0323efafa9f",
+			"integrity": "sha512-gg6IhT8aL4nO/VSPfX6uQXDdBNyB3USRO+RM/Letaz1e6F9kLHJcR7/PrOCXEgcVRK9QtZASw4M2jBE2/6hsgA==",
+			"license": "SEE LICENSE IN LICENSE",
 			"optional": true,
 			"engines": {
 				"node": ">= 10"
@@ -1187,16 +1186,16 @@
 			"license": "ISC"
 		},
 		"node_modules/@keetanetwork/keetanet-client": {
-			"version": "0.14.7",
-			"resolved": "https://npm.pkg.github.com/download/@KeetaNetwork/keetanet-client/0.14.7/c9d8bea8be445cc20dfaca1fd5afed63f7b38fcf",
-			"integrity": "sha512-WgfQQCcOe/iUG5roeh3gcPVnLy4yWnTaia6i+SX+hk9Nt6SkHOjUOFKY//gIg43/nCxVyQS+BeJWJdd/+aBZ4g==",
+			"version": "0.14.10",
+			"resolved": "https://npm.pkg.github.com/download/@KeetaNetwork/keetanet-client/0.14.10/21ddea2b00f685b2724bfb319e20e401cd5a6c29",
+			"integrity": "sha512-v89byeUNHUhNj30nWfIett8Gim2V4R4m1cYp3/X+avDuz1JTp4brBj/a5PF4TVrCU+TSYSTO66aHl7fQS1Q2SA==",
 			"license": "see LICENSE",
 			"dependencies": {
 				"secp256k1": "5.0.1"
 			},
 			"optionalDependencies": {
 				"@google-cloud/logging": "11.2.0",
-				"@keetanetwork/asn1-napi-rs": "1.1.9"
+				"@keetanetwork/asn1-napi-rs": "1.2.0"
 			}
 		},
 		"node_modules/@keetanetwork/web-ui": {
@@ -3686,12 +3685,6 @@
 					"optional": true
 				}
 			}
-		},
-		"node_modules/decimal.js": {
-			"version": "10.6.0",
-			"resolved": "https://registry.npmjs.org/decimal.js/-/decimal.js-10.6.0.tgz",
-			"integrity": "sha512-YpgQiITW3JXGntzdUmyUR1V812Hn8T1YVXhCu+wO3OpS4eU9l4YdD3qjyiKdV6mvV29zapkMeD390UVEf2lkUg==",
-			"license": "MIT"
 		},
 		"node_modules/deep-is": {
 			"version": "0.1.4",
