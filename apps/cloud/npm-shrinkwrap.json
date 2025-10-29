@@ -1,12 +1,12 @@
 {
 	"name": "@keetanetwork/explorer",
-	"version": "0.0.17",
+	"version": "0.0.18",
 	"lockfileVersion": 3,
 	"requires": true,
 	"packages": {
 		"": {
 			"name": "@keetanetwork/explorer",
-			"version": "0.0.17",
+			"version": "0.0.18",
 			"dependencies": {
 				"@google-cloud/dns": "4.0.0",
 				"@keetanetwork/pulumi-components": "1.0.79",
