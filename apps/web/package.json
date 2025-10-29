@@ -9,7 +9,7 @@
 		"preview": "make dist && vite preview --outDir ./dist"
 	},
 	"dependencies": {
-		"@keetanetwork/anchor": "0.0.11",
+		"@keetanetwork/anchor": "0.0.20",
 		"@keetanetwork/web-ui": "1.3.18",
 		"@modular-forms/preact": "0.12.1",
 		"@preact-signals/query": "2.1.1",
