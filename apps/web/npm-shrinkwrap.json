@@ -7,7 +7,7 @@
 		"": {
 			"name": "web",
 			"dependencies": {
-				"@keetanetwork/anchor": "0.0.19",
+				"@keetanetwork/anchor": "0.0.20",
 				"@keetanetwork/web-ui": "1.3.18",
 				"@modular-forms/preact": "0.12.1",
 				"@preact-signals/query": "2.1.1",
@@ -1156,9 +1156,9 @@
 			}
 		},
 		"node_modules/@keetanetwork/anchor": {
-			"version": "0.0.19",
-			"resolved": "https://npm.pkg.github.com/download/@keetanetwork/anchor/0.0.19/07de75bb3702bac5f1d4d27f38f04f0d6497eec5",
-			"integrity": "sha512-ll9tLScaoCfWs4iTK80JLlhYi/0bOONDP9Xi30OCjx+Qtml7urfmWCBQaSrbwclCwG/LOwLizcxBvH66l0awmQ==",
+			"version": "0.0.20",
+			"resolved": "https://npm.pkg.github.com/download/@keetanetwork/anchor/0.0.20/3da5738150fc2912f8266b4f0fcffff84fb7dbdf",
+			"integrity": "sha512-Bg7RXK7hJ01YRjP/ndD9P0pqFeiY6Tra19GpX1bS3wNpqrqaKh6maM80JUWPQYQ+QKGP5zpmmFBao/iZicQCyQ==",
 			"license": "SEE LICENSE IN LICENSE",
 			"dependencies": {
 				"@keetanetwork/currency-info": "1.2.5",

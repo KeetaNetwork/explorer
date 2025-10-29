@@ -9,7 +9,7 @@
       "dependencies": {
         "@hono/node-server": "1.14.2",
         "@hono/node-ws": "1.1.4",
-        "@keetanetwork/anchor": "0.0.17",
+        "@keetanetwork/anchor": "0.0.20",
         "@keetanetwork/asn1-napi-rs": "1.2.0",
         "@keetanetwork/web-ui-utils": "1.3.10",
         "hono": "4.7.10",
@@ -704,13 +704,13 @@
       }
     },
     "node_modules/@keetanetwork/anchor": {
-      "version": "0.0.17",
-      "resolved": "https://npm.pkg.github.com/download/@keetanetwork/anchor/0.0.17/d16dbc34b352ed4ea7b751e97c34340672195fa2",
-      "integrity": "sha512-JnSjAuqC8a9mA6P1cvXfn8N4w2/NejB0NZAuynZzEtJXh9HSBSUsrYVNjkPGqR1ih53js1S5NRpiOUq03zPv6A==",
+      "version": "0.0.20",
+      "resolved": "https://npm.pkg.github.com/download/@keetanetwork/anchor/0.0.20/3da5738150fc2912f8266b4f0fcffff84fb7dbdf",
+      "integrity": "sha512-Bg7RXK7hJ01YRjP/ndD9P0pqFeiY6Tra19GpX1bS3wNpqrqaKh6maM80JUWPQYQ+QKGP5zpmmFBao/iZicQCyQ==",
       "license": "SEE LICENSE IN LICENSE",
       "dependencies": {
         "@keetanetwork/currency-info": "1.2.5",
-        "@keetanetwork/keetanet-client": "0.14.10",
+        "@keetanetwork/keetanet-client": "0.14.11",
         "typia": "9.5.0"
       },
       "engines": {
@@ -733,9 +733,9 @@
       "license": "ISC"
     },
     "node_modules/@keetanetwork/keetanet-client": {
-      "version": "0.14.10",
-      "resolved": "https://npm.pkg.github.com/download/@KeetaNetwork/keetanet-client/0.14.10/21ddea2b00f685b2724bfb319e20e401cd5a6c29",
-      "integrity": "sha512-v89byeUNHUhNj30nWfIett8Gim2V4R4m1cYp3/X+avDuz1JTp4brBj/a5PF4TVrCU+TSYSTO66aHl7fQS1Q2SA==",
+      "version": "0.14.11",
+      "resolved": "https://npm.pkg.github.com/download/@KeetaNetwork/keetanet-client/0.14.11/ef3c062540cec8ea9baac337979ab319cdee8be5",
+      "integrity": "sha512-y2W4T/MO5Z7vhIEvC1H9XVCkXv7vuQG4bP18qoX7b+34h5vcevHA9rPnqdkyVuxxAhyVskJ9j/XrmrizNxEU9A==",
       "license": "see LICENSE",
       "dependencies": {
         "secp256k1": "5.0.1"
