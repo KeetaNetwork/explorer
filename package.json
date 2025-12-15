@@ -10,8 +10,6 @@
 	},
 	"scripts": {
 		"tsx": "tsx",
-		"dev": "make do-dev-server",
-		"lint": "make do-lint",
 		"test": "make test",
 		"make:all": "make all",
 		"make:dist": "make dist",
