@@ -16,7 +16,11 @@
 		"make:test": "make test",
 		"make:do-lint": "make do-lint",
 		"make:clean": "make clean",
-		"make:distclean": "make distclean"
+		"make:distclean": "make distclean",
+		"make:do-deploy-dev": "make do-deploy-dev",
+		"make:do-dev-server": "make do-dev-server",
+		"make:do-publish": "make do-publish",
+		"make:help": "make help"
 	},
 	"packageManager": "npm@9.8.1",
 	"engines": {
