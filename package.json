@@ -12,7 +12,13 @@
 		"tsx": "tsx",
 		"dev": "make do-dev-server",
 		"lint": "make do-lint",
-		"test": "make test"
+		"test": "make test",
+		"make:all": "make all",
+		"make:dist": "make dist",
+		"make:test": "make test",
+		"make:do-lint": "make do-lint",
+		"make:clean": "make clean",
+		"make:distclean": "make distclean"
 	},
 	"packageManager": "npm@9.8.1",
 	"engines": {
