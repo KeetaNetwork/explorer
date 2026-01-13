@@ -59,7 +59,7 @@ dist/cloud/.done: node_modules tsconfig.json tsup.config.ts $(shell find src -ty
 	rm -rf dist/cloud
 	-@mkdir -p dist >/dev/null 2>/dev/null
 	npm run tsup -- --outDir dist/cloud
-	node -p 'const input = JSON.parse(fs.readFileSync(0, "utf-8")); delete input["scripts"]; delete input["devDependencies"]; JSON.stringify(input, undefined, 4);' < package.json > dist/package.json
+	node -p 'const input = JSON.parse(fs.readFileSync(0, "utf-8")); const rootPkg = JSON.parse(fs.readFileSync("../../package.json", "utf-8")); input.version = rootPkg.version; delete input["scripts"]; delete input["devDependencies"]; delete input["private"]; JSON.stringify(input, undefined, 4);' < package.json > dist/package.json
 	node -p "((s) => JSON.stringify({ ...s, packages: Object.fromEntries(Object.entries(s.packages).map(([k, v]) => [k, k === '' ? { ...v, devDependencies: undefined } : v.dev ? undefined : v]).filter(([, v]) => v !== undefined)) }, null, 4))(require('./npm-shrinkwrap.json'))" > dist/npm-shrinkwrap.json
 	@touch dist/cloud/.done
 

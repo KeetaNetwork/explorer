@@ -1,12 +1,11 @@
 {
 	"name": "@keetanetwork/explorer",
-	"version": "0.0.18",
+	"version": "0.0.0",
 	"lockfileVersion": 3,
 	"requires": true,
 	"packages": {
 		"": {
 			"name": "@keetanetwork/explorer",
-			"version": "0.0.18",
 			"dependencies": {
 				"@google-cloud/dns": "4.0.0",
 				"@keetanetwork/pulumi-components": "1.0.79",
@@ -841,7 +840,6 @@
 			"dev": true,
 			"license": "MIT",
 			"optional": true,
-			"peer": true,
 			"dependencies": {
 				"@microsoft/api-extractor-model": "7.30.6",
 				"@microsoft/tsdoc": "~0.15.1",
@@ -868,7 +866,6 @@
 			"dev": true,
 			"license": "MIT",
 			"optional": true,
-			"peer": true,
 			"dependencies": {
 				"@microsoft/tsdoc": "~0.15.1",
 				"@microsoft/tsdoc-config": "~0.17.1",
@@ -882,7 +879,6 @@
 			"dev": true,
 			"license": "ISC",
 			"optional": true,
-			"peer": true,
 			"dependencies": {
 				"brace-expansion": "^1.1.7"
 			},
@@ -897,7 +893,6 @@
 			"dev": true,
 			"license": "ISC",
 			"optional": true,
-			"peer": true,
 			"dependencies": {
 				"lru-cache": "^6.0.0"
 			},
@@ -915,7 +910,6 @@
 			"dev": true,
 			"license": "Apache-2.0",
 			"optional": true,
-			"peer": true,
 			"bin": {
 				"tsc": "bin/tsc",
 				"tsserver": "bin/tsserver"
@@ -930,8 +924,7 @@
 			"integrity": "sha512-4aErSrCR/On/e5G2hDP0wjooqDdauzEbIq8hIkIe5pXV0rtWJZvdCEKL0ykZxex+IxIwBp0eGeV48hQN07dXtw==",
 			"dev": true,
 			"license": "MIT",
-			"optional": true,
-			"peer": true
+			"optional": true
 		},
 		"node_modules/@microsoft/tsdoc-config": {
 			"version": "0.17.1",
@@ -940,7 +933,6 @@
 			"dev": true,
 			"license": "MIT",
 			"optional": true,
-			"peer": true,
 			"dependencies": {
 				"@microsoft/tsdoc": "0.15.1",
 				"ajv": "~8.12.0",
@@ -1487,6 +1479,7 @@
 			"resolved": "https://registry.npmjs.org/@opentelemetry/api/-/api-1.9.0.tgz",
 			"integrity": "sha512-3giAOQvZiH5F9bMlMiv8+GSPMeqg0dbaeo58/0SlA9sxSqZhnUtxzX9/2FzyhS9sWQf5S0GJE0AKBrFqjpeYcg==",
 			"license": "Apache-2.0",
+			"peer": true,
 			"engines": {
 				"node": ">=8.0.0"
 			}
@@ -2214,7 +2207,6 @@
 			"dev": true,
 			"license": "MIT",
 			"optional": true,
-			"peer": true,
 			"dependencies": {
 				"ajv": "~8.13.0",
 				"ajv-draft-04": "~1.0.0",
@@ -2241,7 +2233,6 @@
 			"dev": true,
 			"license": "MIT",
 			"optional": true,
-			"peer": true,
 			"dependencies": {
 				"fast-deep-equal": "^3.1.3",
 				"json-schema-traverse": "^1.0.0",
@@ -2260,7 +2251,6 @@
 			"dev": true,
 			"license": "ISC",
 			"optional": true,
-			"peer": true,
 			"dependencies": {
 				"lru-cache": "^6.0.0"
 			},
@@ -2278,7 +2268,6 @@
 			"dev": true,
 			"license": "MIT",
 			"optional": true,
-			"peer": true,
 			"dependencies": {
 				"resolve": "~1.22.1",
 				"strip-json-comments": "~3.1.1"
@@ -2291,7 +2280,6 @@
 			"dev": true,
 			"license": "MIT",
 			"optional": true,
-			"peer": true,
 			"dependencies": {
 				"@rushstack/node-core-library": "5.13.1",
 				"supports-color": "~8.1.1"
@@ -2312,7 +2300,6 @@
 			"dev": true,
 			"license": "MIT",
 			"optional": true,
-			"peer": true,
 			"dependencies": {
 				"@rushstack/terminal": "0.15.3",
 				"@types/argparse": "1.0.38",
@@ -2479,8 +2466,7 @@
 			"integrity": "sha512-ebDJ9b0e702Yr7pWgB0jzm+CX4Srzz8RcXtLJDJB+BSccqMa36uyH/zUsSYao5+BD1ytv3k3rPYCq4mAE1hsXA==",
 			"dev": true,
 			"license": "MIT",
-			"optional": true,
-			"peer": true
+			"optional": true
 		},
 		"node_modules/@types/body-parser": {
 			"version": "1.19.5",
@@ -2733,7 +2719,6 @@
 			"dev": true,
 			"license": "MIT",
 			"optional": true,
-			"peer": true,
 			"dependencies": {
 				"fast-deep-equal": "^3.1.1",
 				"json-schema-traverse": "^1.0.0",
@@ -2752,7 +2737,6 @@
 			"dev": true,
 			"license": "MIT",
 			"optional": true,
-			"peer": true,
 			"peerDependencies": {
 				"ajv": "^8.5.0"
 			},
@@ -2769,7 +2753,6 @@
 			"dev": true,
 			"license": "MIT",
 			"optional": true,
-			"peer": true,
 			"dependencies": {
 				"ajv": "^8.0.0"
 			},
@@ -3297,7 +3280,6 @@
 			"integrity": "sha512-A46qtFgd+g7pDZinpnwiRJtxbC1hpgf0uzP3iG89scHk0AUC7A1TGxf5OiiOUv/JMZR8GOt8hL900hV0bOy5xA==",
 			"license": "BSD-3-Clause",
 			"optional": true,
-			"peer": true,
 			"engines": {
 				"node": ">=0.3.1"
 			}
@@ -3357,16 +3339,6 @@
 			"resolved": "https://registry.npmjs.org/emoji-regex/-/emoji-regex-8.0.0.tgz",
 			"integrity": "sha512-MSjYzcWNOA0ewAHpz0MxpYFvwg6yjy1NG3xteoqz644VCo/RPgnr1/GGt+ic3iJTzQ8Eu3TdM14SawnVUmGE6A==",
 			"license": "MIT"
-		},
-		"node_modules/encoding": {
-			"version": "0.1.13",
-			"resolved": "https://registry.npmjs.org/encoding/-/encoding-0.1.13.tgz",
-			"integrity": "sha512-ETBauow1T35Y/WZMkio9jiM0Z5xjHHmJ4XmjZOq1l/dXz3lr2sRn87nJy20RupqSh1F2m3HHPSp8ShIPQJrJ3A==",
-			"license": "MIT",
-			"optional": true,
-			"dependencies": {
-				"iconv-lite": "^0.6.2"
-			}
 		},
 		"node_modules/end-of-stream": {
 			"version": "1.4.4",
@@ -3444,6 +3416,7 @@
 			"dev": true,
 			"hasInstallScript": true,
 			"license": "MIT",
+			"peer": true,
 			"bin": {
 				"esbuild": "bin/esbuild"
 			},
@@ -3550,8 +3523,7 @@
 			"integrity": "sha512-f3qQ9oQy9j2AhBe/H9VC91wLmKBCCU/gDOnKNAYG5hswO7BLKj09Hc5HYNz9cGI++xlpDCIgDaitVs03ATR84Q==",
 			"dev": true,
 			"license": "MIT",
-			"optional": true,
-			"peer": true
+			"optional": true
 		},
 		"node_modules/fast-text-encoding": {
 			"version": "1.0.6",
@@ -3652,7 +3624,6 @@
 			"dev": true,
 			"license": "MIT",
 			"optional": true,
-			"peer": true,
 			"dependencies": {
 				"graceful-fs": "^4.2.0",
 				"jsonfile": "^6.0.1",
@@ -3947,7 +3918,6 @@
 			"dev": true,
 			"license": "MIT",
 			"optional": true,
-			"peer": true,
 			"engines": {
 				"node": ">=8"
 			}
@@ -4136,7 +4106,6 @@
 			"dev": true,
 			"license": "MIT",
 			"optional": true,
-			"peer": true,
 			"engines": {
 				"node": ">=8"
 			}
@@ -4273,8 +4242,7 @@
 			"integrity": "sha512-8wb9Yw966OSxApiCt0K3yNJL8pnNeIv+OEq2YMidz4FKP6nonSRoOXc80iXY4JaN2FC11B9qsNmDsm+ZOfMROA==",
 			"dev": true,
 			"license": "MIT",
-			"optional": true,
-			"peer": true
+			"optional": true
 		},
 		"node_modules/joycon": {
 			"version": "3.1.1",
@@ -4332,8 +4300,7 @@
 			"integrity": "sha512-NM8/P9n3XjXhIZn1lLhkFaACTOURQXjWhV4BA/RnOv8xvgqtqpAX9IO4mRQxSx1Rlo4tqzeqb0sOlruaOy3dug==",
 			"dev": true,
 			"license": "MIT",
-			"optional": true,
-			"peer": true
+			"optional": true
 		},
 		"node_modules/json-stringify-nice": {
 			"version": "1.1.4",
@@ -4351,7 +4318,6 @@
 			"dev": true,
 			"license": "MIT",
 			"optional": true,
-			"peer": true,
 			"dependencies": {
 				"universalify": "^2.0.0"
 			},
@@ -4461,8 +4427,7 @@
 			"integrity": "sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==",
 			"dev": true,
 			"license": "MIT",
-			"optional": true,
-			"peer": true
+			"optional": true
 		},
 		"node_modules/lodash.camelcase": {
 			"version": "4.3.0",
@@ -4525,8 +4490,7 @@
 			"resolved": "https://registry.npmjs.org/make-error/-/make-error-1.3.6.tgz",
 			"integrity": "sha512-s8UhlNe7vPKomQhC1qFelMokr/Sc3AgNbso3n74mVPA5LTZwkB9NlXf4XPamLxJE8h0gh73rM94xvwRT2CVInw==",
 			"license": "ISC",
-			"optional": true,
-			"peer": true
+			"optional": true
 		},
 		"node_modules/make-fetch-happen": {
 			"version": "13.0.1",
@@ -4767,7 +4731,6 @@
 			"integrity": "sha512-FP+p8RB8OWpF3YZBCrP5gtADmtXApB5AMLn+vdyA+PyxCjrCs00mjyUozssO33cwDeT3wNGdLxJ5M//YqtHAJw==",
 			"license": "MIT",
 			"optional": true,
-			"peer": true,
 			"dependencies": {
 				"minimist": "^1.2.6"
 			},
@@ -4844,7 +4807,6 @@
 			],
 			"license": "MIT",
 			"optional": true,
-			"peer": true,
 			"bin": {
 				"nanoid": "bin/nanoid.cjs"
 			},
@@ -5432,37 +5394,6 @@
 				"url": "https://github.com/sponsors/sindresorhus"
 			}
 		},
-		"node_modules/postcss": {
-			"version": "8.5.3",
-			"resolved": "https://registry.npmjs.org/postcss/-/postcss-8.5.3.tgz",
-			"integrity": "sha512-dle9A3yYxlBSrt8Fu+IpjGT8SY8hN0mlaA6GY8t0P5PjIOZemULz/E2Bnm/2dcUOena75OTNkHI76uZBNUUq3A==",
-			"dev": true,
-			"funding": [
-				{
-					"type": "opencollective",
-					"url": "https://opencollective.com/postcss/"
-				},
-				{
-					"type": "tidelift",
-					"url": "https://tidelift.com/funding/github/npm/postcss"
-				},
-				{
-					"type": "github",
-					"url": "https://github.com/sponsors/ai"
-				}
-			],
-			"license": "MIT",
-			"optional": true,
-			"peer": true,
-			"dependencies": {
-				"nanoid": "^3.3.8",
-				"picocolors": "^1.1.1",
-				"source-map-js": "^1.2.1"
-			},
-			"engines": {
-				"node": "^10 || ^12 || >=14"
-			}
-		},
 		"node_modules/postcss-load-config": {
 			"version": "6.0.1",
 			"resolved": "https://registry.npmjs.org/postcss-load-config/-/postcss-load-config-6.0.1.tgz",
@@ -6009,7 +5940,6 @@
 			"dev": true,
 			"license": "BSD-3-Clause",
 			"optional": true,
-			"peer": true,
 			"engines": {
 				"node": ">=0.10.0"
 			}
@@ -6105,7 +6035,6 @@
 			"dev": true,
 			"license": "MIT",
 			"optional": true,
-			"peer": true,
 			"engines": {
 				"node": ">=0.6.19"
 			}
@@ -6186,7 +6115,6 @@
 			"dev": true,
 			"license": "MIT",
 			"optional": true,
-			"peer": true,
 			"engines": {
 				"node": ">=8"
 			},
@@ -6277,7 +6205,6 @@
 			"dev": true,
 			"license": "MIT",
 			"optional": true,
-			"peer": true,
 			"dependencies": {
 				"has-flag": "^4.0.0"
 			},
@@ -6510,7 +6437,6 @@
 			"integrity": "sha512-BVwVbPJRspzNh2yfslyT1PSbl5uIk03EZlb493RKHN4qej/D06n1cEhjlOJG69oFsE7OT8XjpTUcYf6pKTLMhw==",
 			"license": "MIT",
 			"optional": true,
-			"peer": true,
 			"dependencies": {
 				"arrify": "^1.0.0",
 				"buffer-from": "^1.1.0",
@@ -6534,7 +6460,6 @@
 			"integrity": "sha512-3CYzex9M9FGQjCGMGyi6/31c8GJbgb0qGyrx5HWxPd0aCwh4cB2YjMb2Xf9UuoogrMrlO9cTqnB5rI5GHZTcUA==",
 			"license": "MIT",
 			"optional": true,
-			"peer": true,
 			"engines": {
 				"node": ">=0.10.0"
 			}
@@ -6655,6 +6580,7 @@
 			"integrity": "sha512-CWBzXQrc/qOkhidw1OzBTQuYRbfyxDXJMVJ1XNwUHGROVmuaeiEm3OslpZ1RV96d7SKKjZKrSJu3+t/xlw3R9A==",
 			"devOptional": true,
 			"license": "Apache-2.0",
+			"peer": true,
 			"bin": {
 				"tsc": "bin/tsc",
 				"tsserver": "bin/tsserver"
@@ -6707,7 +6633,6 @@
 			"dev": true,
 			"license": "MIT",
 			"optional": true,
-			"peer": true,
 			"engines": {
 				"node": ">= 10.0.0"
 			}
@@ -6729,7 +6654,6 @@
 			"dev": true,
 			"license": "BSD-2-Clause",
 			"optional": true,
-			"peer": true,
 			"dependencies": {
 				"punycode": "^2.1.0"
 			}
@@ -6923,7 +6847,6 @@
 			"integrity": "sha512-uTv8J/wiWTgUTg+9vLTi//leUl5vDQS6uii/emeTb2ssY7vl6QWf2fFbIIGjnhjvbdKlU0ed7QPgY1htTC86jQ==",
 			"license": "MIT",
 			"optional": true,
-			"peer": true,
 			"engines": {
 				"node": ">=4"
 			}

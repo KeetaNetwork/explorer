@@ -1,8 +1,8 @@
 {
 	"name": "@keetanetwork/explorer",
-	"version": "0.0.18",
 	"description": "",
 	"author": "Keeta, Inc",
+	"private": true,
 	"type": "module",
 	"repository": {
 		"type": "git",
