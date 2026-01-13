@@ -1,6 +1,6 @@
 {
 	"name": "explorer",
-	"version": "0.0.1",
+	"version": "0.1.0",
 	"lockfileVersion": 3,
 	"requires": true,
 	"packages": {
@@ -16,7 +16,7 @@
 				"node": ">=20.18.0",
 				"npm": ">=9.8.1"
 			},
-			"version": "0.0.1"
+			"version": "0.1.0"
 		},
 		"node_modules/@esbuild/aix-ppc64": {
 			"version": "0.25.4",
