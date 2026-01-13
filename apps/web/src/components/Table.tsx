@@ -217,7 +217,7 @@ function Table<T>({ className, columns, rows, renderRow, isLoading = false, load
 	})();
 
 	return(<div className={twMerge(
-		'grid grid-cols-[repeat(12,_minmax(min-content,1fr))] overflow-x-auto lg:overflow-x-hidden [&>div]:border-b [&>div]:border-slate-100',
+		'grid grid-cols-[repeat(12,_minmax(min-content,1fr))] overflow-x-auto [&>div]:border-b [&>div]:border-slate-100',
 		className
 	)}>
 		{renderedColumns}
