@@ -3,7 +3,8 @@ import { completeDate } from "@/helpers/date";
 import { Button, Modal, ModalContent, ModalFooter, ModalHeader, useModal } from "@keetanetwork/web-ui";
 import { IconBoolean } from "./IconBoolean";
 import { toTitleCase } from "@/helpers/string";
-import { ExplorerClientSDK } from "@/libs/explorer-sdk";
+import type { ExplorerClientSDK } from "@/libs/explorer-sdk";
+import { CardContainer } from "@/components/CardContainer";
 
 type ChainCertificateModalProps = {
 	certificate: Awaited<ReturnType<typeof ExplorerClientSDK.prototype.account.certificate>>['certificate']['chain'][number];
@@ -23,7 +24,7 @@ export function ChainCertificateModal({ certificate }: ChainCertificateModalProp
 					content={[
 						{ label: "Issuer", value: certificate.issuerName },
 						{ label: "Subject", value: certificate.subjectName },
-						{ label: "Is Self-Signed", value: certificate.isSelfSigned ? "Yes" : "No" },
+						{ label: "Is Root", value: certificate.isSelfSigned ? <IconBoolean value={true} /> : undefined, type: "jsx" },
 						{ label: "Issued At", value: completeDate(certificate.issuedAt) },
 						{ label: certificate.valid ? "Valid Until" : "Expired On", value: completeDate(certificate.expiresAt) },
 						{ label: "Serial", value: `${certificate.serial.toString(16).toUpperCase()} (${certificate.serial.toString()})` },
@@ -57,6 +58,10 @@ export function ChainCertificateModal({ certificate }: ChainCertificateModalProp
 						value: item.sensitive ? "********" : item.value,
 					}))}
 				/>
+
+				<CardContainer title="Certificate PEM" titleClassName="py-3 bg-slate-50" contentClassName="p-4 whitespace-pre font-mono text-sm overflow-x-auto">
+					{certificate.pem}
+				</CardContainer>
 			</ModalContent>
 
 			<ModalFooter

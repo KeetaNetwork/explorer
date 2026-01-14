@@ -74,6 +74,7 @@ function certificateToAPIResponse(certificate: Anchor.lib.Certificates.Certifica
 		issuerDN: certificate.issuerDN,
 		subjectDN: certificate.subjectDN,
 		attributes,
+		pem: certificate.toPEM(),
 	}) as const;
 }
 
