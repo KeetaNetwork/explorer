@@ -1,11 +1,11 @@
 import { Typography } from "@keetanetwork/web-ui";
 import { TextAccountLink } from "./TextAccountLink";
-import { NonNullableProps } from "@/utils/types";
-import { CardContainer, CardContainerProps } from "./CardContainer";
+import type { NonNullableProps } from "@/utils/types";
+import { CardContainer, type CardContainerProps } from "./CardContainer";
 import { twMerge } from "tailwind-merge";
 import { TextBlockLink } from "./TextBlockLink";
 import { completeDate, completeDay } from "@/helpers/date";
-import { VNode } from "preact";
+import type { VNode } from "preact";
 
 type ContentItemType = "text" | "account" | "block" | "datetime" | "date" | "jsx";
 
@@ -37,14 +37,14 @@ interface ContentItemDatetime extends ContentItemBase {
 
 interface ContentItemJSX extends ContentItemBase {
 	type: Extract<ContentItemType, "jsx">;
-	value: VNode;
+	value: VNode | undefined;
 }
 
 export type ContentItem = ContentItemText | ContentItemAccount | ContentItemBlock | ContentItemDatetime | ContentItemJSX;
 
 interface ContentCardProps extends CardContainerProps {
 	content: ContentItem[]
-};
+}
 
 /**
  * Utility function to check if a value is valid
