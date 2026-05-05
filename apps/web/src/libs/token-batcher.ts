@@ -44,11 +44,16 @@ function parseTokenMetadata(metadata: string | undefined): { decimalPlaces: numb
 			'decimalPlaces' in parsedMetadata
 		) {
 			decimalPlaces = Number(parsedMetadata.decimalPlaces ?? 0);
-			if (Number.isNaN(decimalPlaces) || decimalPlaces < 0) {
-				decimalPlaces = 0;
-			}
 		}
 	} catch {  /* Ignore  */ }
+
+	if (!Number.isInteger(decimalPlaces)) {
+		decimalPlaces = Math.floor(decimalPlaces);
+	}
+
+	if (!Number.isFinite(decimalPlaces) || decimalPlaces < 0 || decimalPlaces > 1024) {
+		decimalPlaces = 0;
+	}
 
 	return({ decimalPlaces });
 }
