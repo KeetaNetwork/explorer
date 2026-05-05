@@ -31,8 +31,9 @@ interface WaiterPromise {
  * Parsers
  */
 function parseTokenMetadata(metadata: string | undefined): { decimalPlaces: number } {
+	let decimalPlaces = 0;
 	if (!metadata) {
-		return({ decimalPlaces: 0 });
+		return({ decimalPlaces });
 	}
 
 	try {
@@ -42,13 +43,14 @@ function parseTokenMetadata(metadata: string | undefined): { decimalPlaces: numb
 			typeof parsedMetadata === 'object' &&
 			'decimalPlaces' in parsedMetadata
 		) {
-			return({
-				decimalPlaces: Number(parsedMetadata.decimalPlaces ?? 0)
-			});
+			decimalPlaces = Number(parsedMetadata.decimalPlaces ?? 0);
+			if (Number.isNaN(decimalPlaces) || decimalPlaces < 0) {
+				decimalPlaces = 0;
+			}
 		}
 	} catch {  /* Ignore  */ }
 
-	return({ decimalPlaces: 0 });
+	return({ decimalPlaces });
 }
 
  export function parseTokenDetails(token: AccountInfo, baseToken: GenericAccount): TokenDetails {
