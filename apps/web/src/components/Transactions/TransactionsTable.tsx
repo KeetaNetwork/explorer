@@ -241,7 +241,13 @@ function renderRowMODIFY_PERMISSIONS(row: Operation & { type: "MODIFY_PERMISSION
 	return (
 		<>
 			<TextAccountLink publicKey={row.block.account} />
-			<TextAccountLink publicKey={row.operation.principal} />
+			{
+				typeof row.operation.principal === 'string' ? (
+					<TextAccountLink publicKey={row.operation.principal} />
+				) : (
+					<TextCertificateLink account={row.operation.principal.certificateAccount} hash={row.operation.principal.certificateHash} truncateChars={8} />
+				)
+			}
 			<Typography size="sm">
 				{getAdjustMethodName(row.operation.method)}
 			</Typography>
@@ -249,7 +255,7 @@ function renderRowMODIFY_PERMISSIONS(row: Operation & { type: "MODIFY_PERMISSION
 	)
 }
 
-function renderRowUNKNOWN(row: Operation) {
+function renderRowUNKNOWN(_ignore_row: Operation) {
 	return (
 		<>
 			<TableRowItem className='col-span-6' position="last">

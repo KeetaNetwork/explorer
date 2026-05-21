@@ -3,7 +3,7 @@ import { useToast } from "@keetanetwork/web-ui";
 import type { NormalizedOperation } from "@keetanetwork/web-ui/helpers/keetanet-operations";
 import { useInfiniteQuery$, useQueryClient$ } from "@preact-signals/query";
 import { useEffect, useRef, useState } from "preact/hooks";
-import type * as Anchor from "@keetanetwork/anchor";
+import type { ToJSONSerializable } from "@keetanetwork/anchor/lib/utils/json";
 
 function scrollToAnchor() {
     const target = document.getElementById('results-container');
@@ -15,7 +15,7 @@ function scrollToAnchor() {
     });
 }
 
-export type Operation = ReturnType<typeof Anchor.KeetaNet.lib.Utils.Conversion.toJSONSerializable<NormalizedOperation, any>>
+export type Operation = ToJSONSerializable<NormalizedOperation>;
 
 interface UseTransactionsProps {
 	publicKey?: string

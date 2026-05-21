@@ -103,7 +103,9 @@ export default function AccountPage({ params: { accountPublicKey }}: { params: {
 					{ label: "Delegated to", type: "account", value: account.representative },
 					{ label: "Name", value: account.info.name },
 					{ label: "Description", value: account.info.description },
-					{ label: "Quorum", value: account.info.multisigQuorum },
+					...('multisigQuorum' in account.info ? [
+						{ label: "Quorum", value: account.info.multisigQuorum }
+					] : [])
 				]}
 			/>
 

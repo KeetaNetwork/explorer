@@ -8,7 +8,7 @@ import { validator } from "hono/validator";
 import * as v from "valibot";
 import { splitEvenly } from "@/utils/array";
 import { Numeric } from "@keetanetwork/web-ui-utils/helpers/Numeric";
-import type { GenericAccount } from "@keetanetwork/web-ui-utils/helpers/keetanet-operations";
+import type { GenericAccount } from "@keetanetwork/keetanet-client/lib/account";
 
 /**
  * Types
