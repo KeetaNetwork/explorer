@@ -25,7 +25,11 @@ export type TokenDetails = {
 	type: "BASE" | "TRUSTABLE" | "RISKY" | "UNKNOWN";
 };
 
-type AccountInfo = Awaited<ReturnType<typeof KeetaNetLib.UserClient.prototype.client.getAccountsInfo>>[number];
+type KeetaNetLibType = typeof KeetaNetLib;
+type AccountKeyAlgorithm = KeetaNetLibType['lib']['Account']['AccountKeyAlgorithm'][keyof KeetaNetLibType['lib']['Account']['AccountKeyAlgorithm']];
+
+type AccountInfo<AccountType extends AccountKeyAlgorithm> = Awaited<ReturnType<typeof KeetaNetLib.UserClient.prototype.client.getAccountInfo<AccountType>>>
+type TokenAccountInfo = AccountInfo<KeetaNetLibType['lib']['Account']['AccountKeyAlgorithm']['TOKEN']>
 
 /**
  * Schema to validate query parameters for /token endpoint
@@ -67,7 +71,7 @@ function parseTokenMetadata(metadata: string | undefined): { decimalPlaces: numb
 	return({ decimalPlaces: 0 });
 }
 
- export function parseTokenDetails(token: AccountInfo, baseToken: GenericAccount): TokenDetails {
+ export function parseTokenDetails(token: TokenAccountInfo, baseToken: GenericAccount): TokenDetails {
 	const metadata = parseTokenMetadata(token.info.metadata);
 
 	return({
@@ -122,7 +126,15 @@ export async function getManyTokens(client: InstanceType<typeof KeetaNetLib.Clie
 	const filteredInfos = Object.entries(infos).filter(([, data]) => data && data.account.isToken())
 
 	// Parse details for each token account
-	return Object.fromEntries(filteredInfos.map(([key, data]) => ([key, parseTokenDetails(data, baseToken)])))
+	return Object.fromEntries(filteredInfos.map(function([key, data]) {
+		// XXX: TypeScript isn't narrowing the type based on this, sadly
+		if (!data.account.isToken()) {
+			throw(new Error('Expected token account'));
+		}
+
+		// @ts-ignore
+		return([key, parseTokenDetails(data, baseToken)]);
+	}));
 }
 
 
@@ -152,7 +164,9 @@ const token = new Hono<WorkerEnv>()
 			throw new NotFoundError('Invalid public key');
 		}
 
-		const info = await client.getAccountInfo(tokenPublicKey);
+		const tokenPublicKeyTyped = KeetaNetLib.lib.Account.fromPublicKeyString(tokenPublicKey).assertKeyType(KeetaNetLib.lib.Account.AccountKeyAlgorithm.TOKEN);
+
+		const info = await client.getAccountInfo(tokenPublicKeyTyped);
 		const token = parseTokenDetails(info, c.get('explorer').keetaNet.network.getBaseToken());
 
 		return jsonResponse(c, { token })
