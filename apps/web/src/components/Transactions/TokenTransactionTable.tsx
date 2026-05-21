@@ -53,7 +53,7 @@ function renderRowRECEIVE(row: Operation & { type: "RECEIVE" }) {
 	)
 }
 
-function renderRowSWAP(row: Operation & { type: "SWAP" }) {
+function renderRowSWAP(_ignore_row: Operation & { type: "SWAP" }) {
 	return (
 		<>
 			<TableRowItem className='col-span-4' position="last">
@@ -63,7 +63,7 @@ function renderRowSWAP(row: Operation & { type: "SWAP" }) {
 	)
 }
 
-function renderRowSWAP_FORWARD(row: Operation & { type: "SWAP_FORWARD" }) {
+function renderRowSWAP_FORWARD(_ignore_row: Operation & { type: "SWAP_FORWARD" }) {
 	return (
 		<>
 			<TableRowItem className='col-span-4' position="last">
@@ -104,7 +104,7 @@ function renderRowTOKEN_ADMIN_MODIFY_BALANCE(row: Operation & { type: "TOKEN_ADM
 	)
 }
 
-function renderRowCREATE_IDENTIFIER(row: Operation & { type: "CREATE_IDENTIFIER" }) {
+function renderRowCREATE_IDENTIFIER(_ignore_row: Operation & { type: "CREATE_IDENTIFIER" }) {
 	return (
 		<>
 			<TableRowItem className='col-span-4' position="last">
@@ -114,7 +114,7 @@ function renderRowCREATE_IDENTIFIER(row: Operation & { type: "CREATE_IDENTIFIER"
 	)
 }
 
-function renderRowSET_INFO(row: Operation & { type: "SET_INFO" }) {
+function renderRowSET_INFO(_ignore_row: Operation & { type: "SET_INFO" }) {
 	return (
 		<>
 			<TableRowItem className='col-span-4' position="last">
@@ -124,7 +124,7 @@ function renderRowSET_INFO(row: Operation & { type: "SET_INFO" }) {
 	)
 }
 
-function renderRowSET_REP(row: Operation & { type: "SET_REP" }) {
+function renderRowSET_REP(_ignore_row: Operation & { type: "SET_REP" }) {
 	return (
 		<>
 			<TableRowItem className='col-span-4' position="last">
@@ -150,7 +150,13 @@ function renderRowMANAGE_CERTIFICATE(row: Operation & { type: "MANAGE_CERTIFICAT
 function renderRowMODIFY_PERMISSIONS(row: Operation & { type: "MODIFY_PERMISSIONS" }) {
 	return (
 		<>
-			<TextTokenLink publicKey={row.operation.principal} />
+			{
+				typeof row.operation.principal === 'string' ? (
+					<TextTokenLink publicKey={row.operation.principal} />
+				) : (
+					<TextCertificateLink account={row.operation.principal.certificateAccount} hash={row.operation.principal.certificateHash} truncateChars={8} />
+				)
+			}
 			<Typography size="sm">
 				{getAdjustMethodName(row.operation.method)}
 			</Typography>
@@ -158,7 +164,7 @@ function renderRowMODIFY_PERMISSIONS(row: Operation & { type: "MODIFY_PERMISSION
 	)
 }
 
-function renderRowUNKNOWN(row: Operation) {
+function renderRowUNKNOWN(_ignore_row: Operation) {
 	return (
 		<>
 			<TableRowItem className='col-span-4' position="last">

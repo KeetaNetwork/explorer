@@ -1,11 +1,16 @@
 import * as v from "valibot";
 import * as Anchor from "@keetanetwork/anchor";
+import type { KeetaNet } from "@keetanetwork/anchor";
 import { ClientNotFoundError, ExplorerSDK, type ExplorerSDKConfig, type NetworkConfig } from '@keetanetwork/explorer-client';
-import type { GenericAccount, NormalizedOperation, NormalizedOperationMANAGE_CERTIFICATE } from '@keetanetwork/web-ui/helpers/keetanet-operations';
+import type { NormalizedOperation, NormalizedOperationMANAGE_CERTIFICATE } from '@keetanetwork/web-ui/helpers/keetanet-operations';
+import type { GenericAccount } from "@keetanetwork/keetanet-client/lib/account";
 import { getCertificateHash, normalizeOperations } from '@keetanetwork/web-ui/helpers/keetanet-operations'; // eslint-disable-line no-duplicate-imports
 import { TokenBatcher } from "./token-batcher";
 import { Numeric } from "@keetanetwork/web-ui/helpers/Numeric";
 import { networkConfig } from "./networkConfig";
+import type { Networks as NetworkAlias } from "@keetanetwork/keetanet-client/config";
+import type { ToJSONSerializable } from "@keetanetwork/anchor/lib/utils/json";
+import type { BlockHash } from "@keetanetwork/keetanet-client/lib/block";
 
 const KeetaNetLib = Anchor.KeetaNet;
 
@@ -22,20 +27,20 @@ type TransactionQuery = v.InferInput<typeof transactionQuerySchema>;
 /**
  * Helpers
  */
-function normalizedOperationToJSONSerializable(op: NormalizedOperation) {
-	const { block: { operations, ...block}, ...serialized } = KeetaNetLib.lib.Utils.Conversion.toJSONSerializable(op);
+function normalizedOperationToJSONSerializable(op: NormalizedOperation): ToJSONSerializable<NormalizedOperation> {
+	const serialized = KeetaNetLib.lib.Utils.Conversion.toJSONSerializable(op);
 	if (serialized.type === "MANAGE_CERTIFICATE") {
 		const manageOperation = op as NormalizedOperationMANAGE_CERTIFICATE;
 		return {
 			...serialized,
-			block,
 			operation: {
+				type: manageOperation.operation.type,
 				method: manageOperation.operation.method,
 				certificateOrHash: getCertificateHash(manageOperation.operation)
 			}
 		}
 	}
-	return { ...serialized, block };
+	return(serialized)
 }
 
 function certificateToAPIResponse(certificate: Anchor.lib.Certificates.Certificate | typeof KeetaNetLib.lib.Utils.Certificate.Certificate.prototype) {
@@ -77,6 +82,8 @@ function certificateToAPIResponse(certificate: Anchor.lib.Certificates.Certifica
 		pem: certificate.toPEM(),
 	}) as const;
 }
+
+type NormalizedAccountInfo = ToJSONSerializable<Awaited<ReturnType<KeetaNet.UserClient['state']>>['info']>;
 
 /**
  * Keeta Explorer SDK Client for the web application.
@@ -179,11 +186,28 @@ export class ExplorerClientSDK {
 				let owner = null
 				if (accountInfo.isMultisig()) {
 					const acls = await this.client.listACLsByEntity(accountPublicKey)
-					signers = acls.filter(a => a.permissions.has(['MULTISIG_SIGNER'])).map(a => a.principal.publicKeyString.get())
+					signers = [];
+					for (const a of acls) {
+						if (a.principalType !== 'ACCOUNT') {
+							continue;
+						}
+						signers.push(a.principal.publicKeyString.get());
+					}
 				} else if (accountInfo.isStorage()) {
 					const acls = await this.client.listACLsByEntity(accountPublicKey)
-					owner = acls.find(a => a.permissions.has(['OWNER']))?.principal.publicKeyString.get() ?? null
+
+					for (const a of acls) {
+						if (a.principalType !== 'ACCOUNT') {
+							continue;
+						}
+						if (a.permissions.has(['OWNER'])) {
+							owner = a.principal.publicKeyString.get();
+							break;
+						}
+					}
 				}
+
+				const serializedInfo: NormalizedAccountInfo = KeetaNetLib.lib.Utils.Conversion.toJSONSerializable(info);
 
 				const account = {
 					type: (accountInfo.isMultisig() ? 'MULTISIG' : accountInfo.isStorage() ? 'STORAGE' : accountInfo.isToken() ? 'TOKEN' : accountInfo.isAccount() ? 'ACCOUNT' : 'UNKNOWN') as 'MULTISIG' | 'STORAGE' | 'TOKEN' | 'ACCOUNT' | 'UNKNOWN',
@@ -191,7 +215,7 @@ export class ExplorerClientSDK {
 					owner,
 					publicKey: accountPublicKey,
 					headBlock: currentHeadBlock,
-					info: KeetaNetLib.lib.Utils.Conversion.toJSONSerializable(info),
+					info: serializedInfo,
 					representative: representative ? KeetaNetLib.lib.Utils.Conversion.toJSONSerializable(representative) : null,
 					tokens: await Promise.all(balances.map(async ({ token, balance }) => {
 						return {
@@ -293,23 +317,23 @@ export class ExplorerClientSDK {
 					throw new ClientNotFoundError('Block not found in vote staple');
 				}
 
-				const previousBlockHash = currentBlock.$opening === true ? undefined : currentBlock.previous;
+				const previousBlockHash: BlockHash | undefined = currentBlock.$opening === true ? undefined : currentBlock.previous;
 				const nextBlockHash = (await this.client.getSuccessorBlock(blockhash))?.hash.toString();
 
 				const blocksHash = voteStaple.blocksHash;
 
 				return ({
 					voteStaple: {
-						votes: KeetaNetLib.lib.Utils.Conversion.toJSONSerializable(voteStaple.votes),
+						votes: KeetaNetLib.lib.Utils.Conversion.toJSONSerializable(voteStaple.votes) as any,
 						blocks: voteStaple.blocks.map(b => {
 							const normalizedOperations = normalizeOperations([{ votes: [], blocks: [b], blocksHash } as any], null)
 							const normalizedBlock = KeetaNetLib.lib.Utils.Conversion.toJSONSerializable(b);
 							return({
 								...normalizedBlock,
 								operations: normalizedOperations.map(normalizedOperationToJSONSerializable)
-							});
+							} as any); 
 						}),
-						originalContent: JSON.stringify(KeetaNetLib.lib.Utils.Conversion.toJSONSerializable(voteStaple), null, "\t")
+						originalContent: JSON.stringify(KeetaNetLib.lib.Utils.Conversion.toJSONSerializable(voteStaple), null, "\t") 
 					},
 					previousBlockHash,
 					nextBlockHash
@@ -319,7 +343,7 @@ export class ExplorerClientSDK {
 			list: async () => {
 				const envNetworks = ((import.meta.env.VITE_APP_AVAILABLE_NETWORKS as string) ?? "").split(",").map(n => n.trim()).filter(n => n.length > 0);
 				const networks = envNetworks.map(networkAlias => ({ networkAlias }));
-				return({ networks })
+				return({ networks } as { networks: { networkAlias: NetworkAlias }[] })
 			},
 		}
 	}

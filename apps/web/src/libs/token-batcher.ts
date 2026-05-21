@@ -1,6 +1,6 @@
 import type * as Anchor from "@keetanetwork/anchor";
-import type { GenericAccount } from "@keetanetwork/web-ui/helpers/keetanet-operations";
 import { Numeric } from "@keetanetwork/web-ui/helpers/Numeric";
+import type { GenericAccount } from "@keetanetwork/keetanet-client/lib/account";
 
 /**
  * Types
@@ -60,6 +60,10 @@ function parseTokenMetadata(metadata: string | undefined): { decimalPlaces: numb
 
  export function parseTokenDetails(token: AccountInfo, baseToken: GenericAccount): TokenDetails {
 	const metadata = parseTokenMetadata(token.info.metadata);
+
+	if (!('supply' in token.info) || !('defaultPermission' in token.info)) {
+		throw new Error('Invalid token account info: missing supply or defaultPermission');
+	}
 
 	return({
 		headBlock: token.currentHeadBlock,
