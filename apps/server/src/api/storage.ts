@@ -6,6 +6,9 @@ import { Hono } from "hono";
 import { NotFoundError } from "./errors";
 import { KeetaNet } from "@keetanetwork/anchor";
 import { getManyTokens } from "./token";
+import type { ToJSONSerializable } from "@keetanetwork/anchor/lib/utils/json";
+
+type UserClientState = Awaited<ReturnType<KeetaNet.UserClient['state']>>
 
 const storage = new Hono<WorkerEnv>()
 	/**
@@ -22,7 +25,7 @@ const storage = new Hono<WorkerEnv>()
 			throw new NotFoundError('Invalid public key');
 		}
 
-		const state = await userClient.state()
+		const state: UserClientState = await userClient.state()
 
 		const balances = state.balances.map(function(balance) {
 			return({
@@ -36,10 +39,12 @@ const storage = new Hono<WorkerEnv>()
 		});
 		const tokens = await getManyTokens(client, tokensPublicKey, explorer.keetaNet.network.getBaseToken());
 
+		const info: ToJSONSerializable<UserClientState['info']> = KeetaNet.lib.Utils.Conversion.toJSONSerializable(state.info);
+
 		const account = {
 			publicKey: accountPublicKey,
 			headBlock: state.currentHeadBlock,
-			info: KeetaNet.lib.Utils.Conversion.toJSONSerializable(state.info),
+			info: info,
 			tokens: balances.map(function({ balance, publicKey }) {
 				return({
 					...tokens[publicKey],
