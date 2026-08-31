@@ -15,7 +15,7 @@ jobs:
       group: deployment
       cancel-in-progress: false
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Authorize GCloud SDK
         uses: google-github-actions/auth@v2

@@ -1,4 +1,4 @@
-ARG NODE_IMAGE=us-central1-docker.pkg.dev/mimetic-algebra-344104/keeta/nodejs-base-20@sha256:77c6a086e53d1a81e1d58bc9679ed2426e9badd0fb79fdd1a61455f0f40b8b4a
+ARG NODE_IMAGE=us-central1-docker.pkg.dev/mimetic-algebra-344104/keeta/nodejs-base-24@sha256:d3be1edd8c0de70fb9d621a2494c7cc58e0ebbeeae64a54d666773510feb1d34
 FROM ${NODE_IMAGE} AS base
 
 #
@@ -19,7 +19,7 @@ RUN unzip -o server.zip -d /app && \
 #
 # Runner stage
 #
-FROM gcr.io/distroless/nodejs20-debian12 AS server-runner
+FROM gcr.io/distroless/nodejs24-debian12 AS server-runner
 
 # Create app directory
 WORKDIR /app
