@@ -9,7 +9,7 @@
 		"preview": "make dist && vite preview --outDir ./dist"
 	},
 	"dependencies": {
-		"@keetanetwork/anchor": "0.0.67",
+		"@keetanetwork/anchor": "0.0.108",
 		"@keetanetwork/web-ui": "^1.7.2",
 		"@modular-forms/preact": "0.12.1",
 		"@preact-signals/query": "2.1.1",
@@ -31,7 +31,7 @@
 		"@tailwindcss/oxide": "4.0.4",
 		"@tailwindcss/postcss": "4.0.4",
 		"@tailwindcss/vite": "4.0.4",
-		"@types/node": "22.15.21",
+		"@types/node": "24.19.0",
 		"@typescript-eslint/eslint-plugin": "8.44.1",
 		"@typescript-eslint/parser": "8.44.1",
 		"eslint": "8.57.1",
