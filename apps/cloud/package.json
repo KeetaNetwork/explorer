@@ -26,12 +26,12 @@
 	},
 	"dependencies": {
 		"@google-cloud/dns": "4.0.0",
-		"@keetanetwork/pulumi-components": "1.0.79",
-		"@pulumi/gcp": "7.29.0",
+		"@keetanetwork/pulumi-components": "1.0.95",
+		"@pulumi/gcp": "9.30.0",
 		"@pulumi/pulumi": "3.122.0"
 	},
 	"devDependencies": {
-		"@types/node": "20.17.50",
+		"@types/node": "24.19.0",
 		"tsup": "8.5.0",
 		"typescript": "5.9.2"
 	}
