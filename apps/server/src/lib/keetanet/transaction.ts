@@ -1,5 +1,6 @@
 import { KeetaNetLib } from "@/utils/keetanet";
 import Numeric from '@/utils/numeric';
+import { ContractOperationType, contractOperationName, type ContractCallOperation, type ContractDeployOperation, type ContractOperationName, type ContractOrderOperation } from '@/lib/contract/operations';
 
 type Block = InstanceType<typeof KeetaNetLib.lib.Block>;
 type BlockOperations = Block['operations'][number];
@@ -49,11 +50,21 @@ type TransactionManageCertificate = TransactionBase & {
 	account: string;
 };
 
-type TransactionOthers = TransactionBase & {
-	operationType: Exclude<BlockOperationTypes, 'SEND' | 'RECEIVE' | 'TOKEN_ADMIN_MODIFY_BALANCE' | 'TOKEN_ADMIN_SUPPLY' | 'SET_REP' | 'SET_INFO' | 'MANAGE_CERTIFICATE'>
+type TransactionContract = Omit<TransactionBase, 'operationType'> & {
+	operationType: ContractOperationName;
+	contract?: string;
+	$account?: string;
 };
 
-export type Transaction = TransactionSendOrReceive | TransactionModifyBalanceOrSupply | TransactionSetRep | TransactionSetInfo | TransactionManageCertificate | TransactionOthers
+type TransactionUnknown = Omit<TransactionBase, 'operationType'> & {
+	operationType: 'UNKNOWN';
+};
+
+type TransactionOthers = TransactionBase & {
+	operationType: Exclude<BlockOperationTypes, 'SEND' | 'RECEIVE' | 'TOKEN_ADMIN_MODIFY_BALANCE' | 'TOKEN_ADMIN_SUPPLY' | 'SET_REP' | 'SET_INFO' | 'MANAGE_CERTIFICATE' | ContractOperationName>
+};
+
+export type Transaction = TransactionSendOrReceive | TransactionModifyBalanceOrSupply | TransactionSetRep | TransactionSetInfo | TransactionManageCertificate | TransactionContract | TransactionUnknown | TransactionOthers
 
 function operationSendAsTransaction(
 	operation: Operation<'SEND'>,
@@ -217,8 +228,43 @@ function operationManageCertificateAsTransaction(
 	});
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const mapOperationTransformer: { [key in OperationType]: (operation: any, block: Block, accountPublicKey: string, addAccount?: boolean) => Transaction } = {
+function operationContractAsTransaction(
+	operation: ContractDeployOperation | ContractCallOperation | ContractOrderOperation,
+	block: Block,
+	_ignore_accountPublicKey: string,
+	addAccount: boolean = false
+): Transaction {
+	const contract = operation.type === ContractOperationType.CONTRACT_ORDER ? block.account : operation.contract;
+	return({
+		blockhash: block.hash.toString(),
+		operationType: contractOperationName(operation.type) ?? 'CONTRACT_CALL',
+		settledAt: block.date,
+		contract: contract.publicKeyString.toString(),
+		...(addAccount ? { $account: block.account.publicKeyString.toString() } : {})
+	});
+}
+
+/**
+ * Operations this explorer does not know: keep the block's place in the
+ * history rather than failing
+ */
+function operationUnknownAsTransaction(
+	_ignore_operation: unknown,
+	block: Block
+): Transaction {
+	return({
+		blockhash: block.hash.toString(),
+		operationType: 'UNKNOWN',
+		settledAt: block.date
+	});
+}
+
+type OperationTransformer = (operation: any, block: Block, accountPublicKey: string, addAccount?: boolean) => Transaction; // eslint-disable-line @typescript-eslint/no-explicit-any
+
+const mapOperationTransformer: { [key in OperationType]: OperationTransformer } & { [type: number]: OperationTransformer | undefined } = {
+	[ContractOperationType.CONTRACT_DEPLOY]: operationContractAsTransaction,
+	[ContractOperationType.CONTRACT_CALL]: operationContractAsTransaction,
+	[ContractOperationType.CONTRACT_ORDER]: operationContractAsTransaction,
 	[KeetaNetLib.lib.Block.OperationType.SEND]: operationSendAsTransaction,
 	[KeetaNetLib.lib.Block.OperationType.RECEIVE]: operationReceiveAsTransaction,
 	[KeetaNetLib.lib.Block.OperationType.TOKEN_ADMIN_MODIFY_BALANCE]: operationTokenAdminModifyBalanceAsTransaction,
@@ -231,8 +277,9 @@ const mapOperationTransformer: { [key in OperationType]: (operation: any, block:
 };
 
 export function blockOperationAsTransaction(operation: BlockOperations, block: Block, accountPublicKey?: string, addAccount: boolean = false): Transaction[] {
+	const transformer = mapOperationTransformer[operation.type as number] ?? operationUnknownAsTransaction;
 	// @ts-ignore
-	return(mapOperationTransformer[operation.type](operation, block, accountPublicKey, addAccount));
+	return(transformer(operation, block, accountPublicKey, addAccount));
 }
 
 export function blockAsTransactions(block: Block, accountPublicKey?: string, addAccount: boolean = false): Transaction[] {

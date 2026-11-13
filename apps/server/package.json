@@ -7,6 +7,7 @@
   },
   "scripts": {
     "dev": "make do-dev-server",
+    "test": "make test",
     "build": "make dist",
     "build:server": "make dist/server",
     "build:client": "make dist/client",

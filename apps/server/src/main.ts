@@ -2,6 +2,7 @@ import type { Networks } from "./lib/explorer";
 import { ExplorerServer } from "./lib/explorer/server";
 import { assertLogLevels } from "./lib/logger/types";
 import { assertNetworkAlias } from "./lib/network";
+import { readLocalNetworkConfig } from "./lib/network/local";
 import { performance } from "node:perf_hooks";
 
 performance.mark("boot:start");
@@ -18,9 +19,16 @@ function main() {
 	}
 
 	/**
+	 * Get the local network (development only) from the environment
+	 * variables: the path of its endpoints.json. Its representatives then
+	 * serve its alias.
+	 */
+	const localNetwork = process.env.APP_LOCAL_NETWORK ? readLocalNetworkConfig(process.env.APP_LOCAL_NETWORK) : undefined;
+
+	/**
 	 * Get the default network from the environment variables.
 	 */
-	const defaultNetwork = process.env.APP_DEFAULT_NETWORK ?? 'test';
+	const defaultNetwork = process.env.APP_DEFAULT_NETWORK ?? localNetwork?.networkAlias ?? 'test';
 	assertNetworkAlias(defaultNetwork, `[main] Invalid default network alias: "${defaultNetwork}"`);
 
 	/**
@@ -47,12 +55,20 @@ function main() {
 	 */
 	const startWebSocketServer = process.env.APP_START_WS_SERVER ? process.env.APP_START_WS_SERVER === 'true' : true;
 
+	/**
+	 * Get the contract verifier's URL from the environment variables
+	 * (optional: without it, contracts have no verification).
+	 */
+	const contractVerifierURL = process.env.APP_CONTRACT_VERIFIER_URL || undefined;
+
 	return ExplorerServer.main({
 		listenPort,
 		listenIP,
 		startWebSocketServer,
 		version: '1.0.0',
 		logLevel: logLevel,
+		localNetwork,
+		contractVerifierURL,
 
 		network: {
 			networksAvailable,
