@@ -229,7 +229,8 @@ const contract = new Hono<WorkerEnv>()
 		const answer = response.body && typeof response.body === 'object' ? response.body as { [key: string]: unknown } : {};
 		if (response.status >= 400) {
 			const message = typeof answer.error === 'string' ? answer.error : `The contract verifier answered ${response.status}`;
-			return(c.json({ message }, response.status === 404 ? 404 : 400));
+			// The verifier answers 429 when it is busy or ran the same check moments ago: try again later.
+			return(c.json({ message }, response.status === 404 ? 404 : (response.status === 429 ? 429 : 400)));
 		}
 		return(jsonResponse(c, { submitted: true, status: typeof answer.status === 'string' ? answer.status : 'queued' }, 202));
 	})
