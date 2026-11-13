@@ -3,6 +3,8 @@ import { KeetaNet } from "../keetanet";
 import { Logger } from "../logger";
 import { LogLevels } from "../logger/types";
 import { Network } from "../network";
+import { LocalNetwork, type LocalNetworkConfig } from "../network/local";
+import { ContractVerifier } from "../contract/verifier";
 import type { KeetaNetLib } from "@/utils/keetanet";
 
 export type Networks = typeof KeetaNetLib.Client.Config.networksArray[number]
@@ -29,6 +31,18 @@ export interface ExplorerConfig {
 		 */
 		defaultNetwork: Networks
 	}
+
+	/**
+	 * A local network (development only): its representatives serve the
+	 * default network's alias in place of the public ones
+	 */
+	localNetwork?: LocalNetworkConfig
+
+	/**
+	 * Base URL of the contract verifier, whose results are shown with
+	 * contracts; without it, contracts have no verification
+	 */
+	contractVerifierURL?: string
 }
 
 export class Explorer {
@@ -38,11 +52,14 @@ export class Explorer {
 	
 	keetaNet: KeetaNet
 
+	contractVerifier: ContractVerifier | null
+
     constructor(configOrInstance: ExplorerConfig | Explorer, network?: Network) {
         if (configOrInstance instanceof Explorer) {
             const instance = configOrInstance;
             this.log = instance.log;
             this.config = instance.config;
+			this.contractVerifier = instance.contractVerifier;
 			this.keetaNet = instance.keetaNet.copy(network);
             return;
         }
@@ -56,10 +73,17 @@ export class Explorer {
 			throw new Error(`Default network ${config.network.defaultNetwork} is not included in the available networks: ${networksAvailable.join(', ')}`);
 		}
 
+		if (config.localNetwork && config.localNetwork.networkAlias !== config.network.defaultNetwork) {
+			throw new Error(`The local network uses the alias ${config.localNetwork.networkAlias}, which must be the default network (not ${config.network.defaultNetwork})`);
+		}
+
 		const logLevel = config.logLevel ?? LogLevels.WARN;
         
 		this.log = new Logger(logLevel);
-		this.keetaNet = new KeetaNet(network ?? Network.fromAlias(config.network.defaultNetwork, this))
+		this.contractVerifier = config.contractVerifierURL ? new ContractVerifier(config.contractVerifierURL) : null;
+		this.keetaNet = new KeetaNet(network ?? (config.localNetwork
+			? LocalNetwork.fromConfig(config.localNetwork, this)
+			: Network.fromAlias(config.network.defaultNetwork, this)))
         
 		this.config = {
 			...config,

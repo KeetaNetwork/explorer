@@ -15,6 +15,7 @@ import { TextCertificateLink } from "@/components/TextCertificateLink";
 import type { ComponentChildren } from "preact";
 import type { Operation } from "@/hooks/useTransactions";
 import { Numeric } from "@keetanetwork/web-ui/helpers/Numeric";
+import { asContractOperation, formatBytes } from "@/helpers/contract";
 
 export interface TransactionsTableProps {
 	operations: Operation[]
@@ -255,7 +256,46 @@ function renderRowMODIFY_PERMISSIONS(row: Operation & { type: "MODIFY_PERMISSION
 	)
 }
 
-function renderRowUNKNOWN(_ignore_row: Operation) {
+/** A row's contract operation, if it is one (the explorer's helpers call those UNKNOWN) */
+function contractOperationOf(row: Operation) {
+	return(row.type === 'UNKNOWN' ? asContractOperation((row as { operation?: unknown }).operation) : null);
+}
+
+function renderRowUNKNOWN(row: Operation) {
+	const contractOperation = contractOperationOf(row);
+	if (contractOperation) {
+		/*
+		 * As for a SEND: who acted, the contract it acted on, and what it
+		 * came to. An order with no calls of its own pins its chain for the
+		 * contracts called elsewhere in its staple, so those are what it is for.
+		 */
+		let contracts: string[];
+		let amount: string;
+		switch (contractOperation.name) {
+			case 'CONTRACT_DEPLOY':
+				contracts = [contractOperation.contract];
+				amount = `${formatBytes(contractOperation.codeSize)} of code`;
+				break;
+			case 'CONTRACT_CALL':
+				contracts = [contractOperation.contract];
+				amount = '';
+				break;
+			case 'CONTRACT_ORDER':
+				contracts = contractOperation.calledContracts ?? [];
+				amount = contractOperation.calls.length === 0 ? 'pinned for this call' : `${contractOperation.calls.length} call${contractOperation.calls.length === 1 ? '' : 's'} ordered`;
+				break;
+		}
+		return (
+			<>
+				<TextAccountLink publicKey={row.block.account} />
+				<div className='flex flex-col'>
+					{contracts.map(contract => <TextAccountLink key={contract} publicKey={contract} />)}
+				</div>
+				<Typography size="sm" className='text-slate-800 opacity-70 whitespace-nowrap'>{amount}</Typography>
+			</>
+		)
+	}
+
 	return (
 		<>
 			<TableRowItem className='col-span-6' position="last">
@@ -288,7 +328,7 @@ const renderRow = (row: Operation) => {
 				{dayjs(row.block.date).fromNow()}
 			</Typography>
 			<Typography size="sm">
-				{row.type}
+				{contractOperationOf(row)?.name ?? row.type}
 			</Typography>
 			{mapRenderers?.[row.type](row as any) || renderRowUNKNOWN(row)}
 		</Fragment>

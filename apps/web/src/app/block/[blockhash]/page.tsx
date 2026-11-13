@@ -24,6 +24,8 @@ import { BlockOriginalStapleContent } from './BlockOriginalStapleContent';
 import { getSigners } from '@keetanetwork/web-ui/helpers/keetanet-operations';
 import * as Anchor from "@keetanetwork/anchor";
 import { TextAccountLink } from '@/components/TextAccountLink';
+import { StapleContractCalls } from '@/components/Contract/StapleContractCalls';
+import { asContractOperation } from '@/helpers/contract';
 
 export default function BlockPage({ params: { blockhash }}: { params: { blockhash: string }}) {
 	const sdk = useClientSDK();
@@ -49,6 +51,7 @@ export default function BlockPage({ params: { blockhash }}: { params: { blockhas
 	}
 
 	const otherBlocks = voteStaple.blocks.filter(({ $hash }) => $hash !== blockhash);
+	const hasContractOperations = voteStaple.blocks.some(block => block.operations.some((operation: { type: string, operation?: unknown }) => operation.type === 'UNKNOWN' && asContractOperation(operation.operation) !== null));
 	const signatures = getSigners(currentBlock.signer as any) as unknown as string[]
 
 	return(<PageContent>
@@ -146,6 +149,9 @@ export default function BlockPage({ params: { blockhash }}: { params: { blockhas
 
 			{/* Operations */}
 			<BlockOperations block={currentBlock} />
+
+			{/* Contract calls in the staple, with their outcomes */}
+			{hasContractOperations && <StapleContractCalls blockhash={blockhash} />}
 
 			{/* Related Blocks on same staple */}
 			{otherBlocks.length > 0 && (
