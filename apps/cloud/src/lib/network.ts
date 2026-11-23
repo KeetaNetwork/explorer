@@ -1,6 +1,6 @@
 import * as pulumi from '@pulumi/pulumi';
 import * as gcp from '@pulumi/gcp';
-import type { GCPRegion } from '@keetanetwork/pulumi-components/dist/packages/gcp/constants';
+import type { GCPRegion } from '@keetanetwork/pulumi-components/packages/gcp/constants.js';
 
 export type ConfigRegion = {
 	region: GCPRegion

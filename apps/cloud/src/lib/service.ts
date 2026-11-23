@@ -261,6 +261,7 @@ export class Service extends pulumi.ComponentResource {
 		}
 
 		const iap = this.config.authentication && {
+			enabled: true,
 			oauth2ClientId: this.config.authentication.clientId,
 			oauth2ClientSecret: this.config.authentication.clientSecret
 		};

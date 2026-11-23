@@ -47,7 +47,7 @@ export async function pbkdf2(
 	keylen: number = PBKDF2_KEY_LEN,
 	digest: string = PBKDF2_DIGEST
 ): Promise<ReturnType<typeof pbkdf2Sync>> {
-	return(await new Promise<Buffer>(function(resolve, reject) {
+	return(await new Promise<ReturnType<typeof pbkdf2Sync>>(function(resolve, reject) {
 		crypto.pbkdf2(
 			inputBuffer,
 			saltBuffer,
