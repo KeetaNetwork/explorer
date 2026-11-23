@@ -17,7 +17,6 @@ help:
 	@echo "  do-set-version - Sets the version of the project"
 	@echo "  do-deploy-dev - Deploys the project to a development environment"
 	@echo "  do-publish    - Publishes the project to npm"
-	@echo "  do-release-pr - Opens or refreshes the release PR (patch bump)"
 	@echo "  clean         - Removes build artifacts"
 	@echo "  distclean     - Removes all build artifacts and dependencies"
 
@@ -76,15 +75,6 @@ do-deploy-dev: node_modules dist
 .PHONY: do-publish
 do-publish: dist
 	npm publish ./dist/keetanetwork-explorer-cloud.tgz
-
-#
-# Release pull request target: bumps the patch version on process/v<version>
-# and opens the pull request. Merging it publishes the package and creates the
-# GitHub release (.github/workflows/publish-and-release.yml).
-#
-.PHONY: do-release-pr
-do-release-pr:
-	@./scripts/create-release-pr.sh $(EXPLORER_RELEASE_EXTRA_ARGS)
 
 #
 # Dist target
