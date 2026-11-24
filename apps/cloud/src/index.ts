@@ -201,7 +201,7 @@ export class ExplorerDeployment extends pulumi.ComponentResource {
 			image: image.getImageUri('server'),
 			regions: regions,
 			metadataAnnotations: {
-				'run.googleapis.com/cpu-throttle': 'false',
+				'run.googleapis.com/cpu-throttling': 'false',
 			},
 			environmentVariables: {
 				...commonEnvs,
