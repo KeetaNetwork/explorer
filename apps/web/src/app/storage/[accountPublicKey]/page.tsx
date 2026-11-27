@@ -17,10 +17,12 @@ import { TextCertificateLink } from '@/components/TextCertificateLink';
 import { completeDay } from '@/helpers/date';
 import { Typography } from '@keetanetwork/web-ui';
 import { Fragment } from 'preact/jsx-runtime';
+import { ContractSection, useIsContract } from '@/components/Contract/ContractSection';
 
 
 export default function AccountPage({ params: { accountPublicKey } }: { params: { accountPublicKey: string }}) {
 	const sdk = useClientSDK();
+	const isContract = useIsContract(accountPublicKey);
 	const { data, isLoading, isError } = useQuery({
 		queryKey: ['storage', accountPublicKey, 'details'],
 		queryFn: () => sdk.storage.details(accountPublicKey),
@@ -52,7 +54,7 @@ export default function AccountPage({ params: { accountPublicKey } }: { params: 
 					className="opacity-50 md:opacity-100 text-white capitalize md:uppercase"
 					variant="overline1"
 				>
-					Storage
+					{isContract ? 'Contract' : 'Storage'}
 				</DEPRECATED_Typography>
 			</div>
 
@@ -108,6 +110,8 @@ export default function AccountPage({ params: { accountPublicKey } }: { params: 
 					{ label: "Owner", type: "account", value: account.owner },
 				]}
 			/>
+
+			<ContractSection publicKey={account.publicKey} />
 
 			{otherTokens.length > 0 && (<AccountOtherTokens tokens={otherTokens} />)}
 

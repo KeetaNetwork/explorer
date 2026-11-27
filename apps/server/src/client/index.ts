@@ -4,8 +4,8 @@ import type { NetworkConfig } from "@/lib/network";
 import { ClientHTTPError, ClientNotFoundError, ClientUnauthorizedError } from "./errors";
 import { ExplorerSDKWebSocket } from "./websocket";
 import { createHeaderFromNetworkConfig } from "@/utils/request";
-import { CustomSuperJSON } from "@/utils/json";
 import { TokenBatcher } from "./batcher";
+import { withSuperJSON } from "./response";
 
 const DEFAULT_REQUEST_TIMEOUT = 15_000; // 15 seconds
 
@@ -128,22 +128,7 @@ export class ExplorerSDK {
 					}
 				}
 
-				return new Proxy(response, {
-					get(target, prop, receiver) {
-						if (prop === 'json') {
-							return async () => {
-								const parsedJson = await target.clone().json();
-								if (typeof parsedJson === 'object' && parsedJson !== null && 'json' in parsedJson && typeof parsedJson.json !== 'undefined') {
-									const text = await target.clone().text();
-									return CustomSuperJSON.parse(text);
-								}
-								return parsedJson;
-							};
-						}
-						const value = Reflect.get(target, prop, receiver);
-						return typeof value === 'function' ? value.bind(target) : value;
-					}
-				})
+				return withSuperJSON(response);
 			},
 		});
 
@@ -290,3 +275,17 @@ export type { NetworkConfig }
 export { Numeric } from '@/utils/numeric'
 export type { SDKWebSocketState } from './websocket';
 export * from './errors';
+export { ExplorerContractsSDK, type ExplorerContractsSDKConfig } from './contracts';
+export type { DecodedValue, DecodedField } from '@/lib/contract/borsh';
+export type {
+	ContractRecord,
+	ContractCallDetails,
+	ContractCallOutcomeDetails,
+	ContractDeployDetails,
+	ContractEffectDetails,
+	StateAccountDetails,
+	Decoded,
+	DecodedOrError
+} from '@/lib/keetanet/contract';
+export type { ContractVerification, ContractVerificationStatus, VerificationStatus } from '@/lib/contract/verifier';
+export type { ContractInterface } from '@/lib/contract/interface';

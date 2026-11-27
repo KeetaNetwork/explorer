@@ -27,6 +27,8 @@ export default defineConfig(() => {
 			],
 			external: [
 				/@keetanetwork\/pulumi-components/,
+				// The contract engine, a native addon a KeetaNet client with contract support loads if present
+				"@keetanetwork/contract-engine",
 				"utf-8-validate",
 				"bufferutil",
 			],

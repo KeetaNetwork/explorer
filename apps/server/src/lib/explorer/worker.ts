@@ -10,6 +10,7 @@ import { getNetworkConfigFromRequest } from "@/utils/request";
 import { CustomNetwork } from "../network/custom";
 import { createHash } from 'crypto';
 import { NotFoundError } from "@/api/errors";
+import { HTTPException } from "hono/http-exception";
 
 export interface ExplorerWorkerConfig extends ExplorerConfig {
     /**
@@ -91,6 +92,9 @@ export class ExplorerWorker extends Explorer {
      */
     #addDefaultErrorHandler() {
         this.#app.onError((error, c) => {
+			if (error instanceof HTTPException) {
+				return c.json({ message: error.message }, error.status);
+			}
 			if (KeetaNetLib.lib.Error.isInstance(error) || error.message.toLowerCase().startsWith('required') || error.message.toLowerCase().includes('not found')) {
 				return c.json({ message: error.message }, 404);
 			} else if (error instanceof NotFoundError) {

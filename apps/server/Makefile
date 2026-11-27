@@ -20,9 +20,8 @@ help:
 # Test target
 # 
 .PHONY: test
-test:
-	@echo '[server] not implemented'
-	@exit 0
+test: node_modules
+	npm run tsx -- --test $(shell find src -name '*.test.ts')
 
 # 
 # Development server target

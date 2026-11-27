@@ -3,6 +3,7 @@ import network from "./network";
 import token from "./token";
 import transaction from "./transaction";
 import account from "./account";
+import contract from "./contract";
 import websocket from "./websocket";
 import storage from "./storage";
 
@@ -11,6 +12,7 @@ const api = new Hono()
      * Add routes to the API
      */
 	.route('/account', account)
+	.route('/contract', contract)
 	.route('/network', network)
 	.route('/storage', storage)
 	.route('/token', token)

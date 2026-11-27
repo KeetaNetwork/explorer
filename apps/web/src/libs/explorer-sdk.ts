@@ -1,7 +1,7 @@
 import * as v from "valibot";
 import * as Anchor from "@keetanetwork/anchor";
 import type { KeetaNet } from "@keetanetwork/anchor";
-import { ClientNotFoundError, ExplorerSDK, type ExplorerSDKConfig, type NetworkConfig } from '@keetanetwork/explorer-client';
+import { ClientNotFoundError, ExplorerContractsSDK, ExplorerSDK, type ExplorerSDKConfig, type NetworkConfig } from '@keetanetwork/explorer-client';
 import type { NormalizedOperation, NormalizedOperationMANAGE_CERTIFICATE } from '@keetanetwork/web-ui/helpers/keetanet-operations';
 import type { GenericAccount } from "@keetanetwork/keetanet-client/lib/account";
 import { getCertificateHash, normalizeOperations } from '@keetanetwork/web-ui/helpers/keetanet-operations'; // eslint-disable-line no-duplicate-imports
@@ -11,6 +11,8 @@ import { networkConfig } from "./networkConfig";
 import type { Networks as NetworkAlias } from "@keetanetwork/keetanet-client/config";
 import type { ToJSONSerializable } from "@keetanetwork/anchor/lib/utils/json";
 import type { BlockHash } from "@keetanetwork/keetanet-client/lib/block";
+import { contractsEnabled, localNetworkClientFor } from "./localNetwork";
+import { serializeContractOperation, stapleCalls } from "@/helpers/contract";
 
 const KeetaNetLib = Anchor.KeetaNet;
 
@@ -27,7 +29,52 @@ type TransactionQuery = v.InferInput<typeof transactionQuerySchema>;
 /**
  * Helpers
  */
-function normalizedOperationToJSONSerializable(op: NormalizedOperation): ToJSONSerializable<NormalizedOperation> {
+/**
+ * normalizeOperations, leaving the staples as they were. It reverses each
+ * staple's blocks and each block's operations in place, which put a block's
+ * operations out of order for anything reading them afterwards (a contract
+ * order names its calls by operation index, and the original content showed
+ * them reversed).
+ */
+function normalizeStaples(voteStaples: Parameters<typeof normalizeOperations>[0], account: Parameters<typeof normalizeOperations>[1]): ReturnType<typeof normalizeOperations> {
+	const arrays: unknown[][] = voteStaples.flatMap(staple => [staple.blocks, ...staple.blocks.map(block => block.operations)]) as unknown[][];
+	const saved = arrays.map(array => [...array]);
+	try {
+		return(normalizeOperations(voteStaples, account));
+	} finally {
+		arrays.forEach((array, index) => array.splice(0, array.length, ...(saved[index] ?? [])));
+	}
+}
+
+/** Each block's staple calls (see stapleCalls), by block hash */
+function callsByBlock(voteStaples: { blocks: Parameters<typeof stapleCalls>[0] }[]): Map<string, Map<string, string>> {
+	const byBlock = new Map<string, Map<string, string>>();
+	for (const staple of voteStaples) {
+		const calls = stapleCalls(staple.blocks);
+		for (const block of staple.blocks) {
+			byBlock.set(block.hash.toString().toUpperCase(), calls);
+		}
+	}
+	return(byBlock);
+}
+
+/**
+ * `calls`, the calls in the operation's staple, lets a contract order name
+ * the contracts it is for
+ */
+function normalizedOperationToJSONSerializable(op: NormalizedOperation, calls?: Map<string, string>): ToJSONSerializable<NormalizedOperation> {
+	if (op.type === 'UNKNOWN') {
+		/* Contract operations, which the explorer's helpers do not know */
+		const contractOperation = serializeContractOperation(op.operation, calls);
+		if (contractOperation) {
+			const { operation: _ignore_operation, ...rest } = op;
+			return({
+				...KeetaNetLib.lib.Utils.Conversion.toJSONSerializable(rest),
+				operation: contractOperation
+			} as unknown as ToJSONSerializable<NormalizedOperation>);
+		}
+	}
+
 	const serialized = KeetaNetLib.lib.Utils.Conversion.toJSONSerializable(op);
 	if (serialized.type === "MANAGE_CERTIFICATE") {
 		const manageOperation = op as NormalizedOperationMANAGE_CERTIFICATE;
@@ -117,9 +164,26 @@ export class ExplorerClientSDK {
 			...config
 		};
 
-		const userClient = KeetaNetLib.UserClient.fromNetwork(this.config.networkConfig.networkAlias, null);
+		const userClient = localNetworkClientFor(this.config.networkConfig.networkAlias)
+			?? KeetaNetLib.UserClient.fromNetwork(this.config.networkConfig.networkAlias, null);
 		this.baseToken = userClient.baseToken
 		this.client = userClient.client;
+		this.#contracts = undefined;
+	}
+
+	#contracts?: ExplorerContractsSDK | null;
+
+	/**
+	 * Contracts, from the explorer's API: `null` unless contract views are
+	 * enabled (on a local network, in development)
+	 */
+	get contracts(): ExplorerContractsSDK | null {
+		if (this.#contracts === undefined) {
+			this.#contracts = contractsEnabled
+				? new ExplorerContractsSDK({ baseURL: this.config.baseURL, networkConfig: this.config.networkConfig })
+				: null;
+		}
+		return(this.#contracts);
 	}
 
 	/**
@@ -321,16 +385,17 @@ export class ExplorerClientSDK {
 				const nextBlockHash = (await this.client.getSuccessorBlock(blockhash))?.hash.toString();
 
 				const blocksHash = voteStaple.blocksHash;
+				const calls = stapleCalls(voteStaple.blocks);
 
 				return ({
 					voteStaple: {
 						votes: KeetaNetLib.lib.Utils.Conversion.toJSONSerializable(voteStaple.votes) as any,
 						blocks: voteStaple.blocks.map(b => {
-							const normalizedOperations = normalizeOperations([{ votes: [], blocks: [b], blocksHash } as any], null)
+							const normalizedOperations = normalizeStaples([{ votes: [], blocks: [b], blocksHash } as any], null)
 							const normalizedBlock = KeetaNetLib.lib.Utils.Conversion.toJSONSerializable(b);
 							return({
 								...normalizedBlock,
-								operations: normalizedOperations.map(normalizedOperationToJSONSerializable)
+								operations: normalizedOperations.map(op => normalizedOperationToJSONSerializable(op, calls))
 							} as any); 
 						}),
 						originalContent: JSON.stringify(KeetaNetLib.lib.Utils.Conversion.toJSONSerializable(voteStaple), null, "\t") 
@@ -361,8 +426,9 @@ export class ExplorerClientSDK {
 			return voteStaple;
 		});
 
-		const normalizedOperations = normalizeOperations(voteStaples, account)
-		const stapleOperations = normalizedOperations.map(normalizedOperationToJSONSerializable);
+		const normalizedOperations = normalizeStaples(voteStaples, account)
+		const calls = callsByBlock(voteStaples);
+		const stapleOperations = normalizedOperations.map(op => normalizedOperationToJSONSerializable(op, calls.get(op.block.hash.toString().toUpperCase())));
 		const nextCursor = (account && stapleOperations.find(op => op.block.$opening && account.comparePublicKey(op.block.account))) ? null : stapleOperations.at(-1)?.voteStapleHash
 
 		return({ nextCursor, stapleOperations });
